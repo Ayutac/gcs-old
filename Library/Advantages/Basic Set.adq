@@ -9369,7 +9369,7 @@
 			<category>Advantage</category>
 		</categories>
 		<spell_bonus>
-			<college_name compare="is">@College@</college_name>
+			<college_name compare="contains">@College@</college_name>
 			<amount per_level="yes">1</amount>
 		</spell_bonus>
 		<skill_bonus>
