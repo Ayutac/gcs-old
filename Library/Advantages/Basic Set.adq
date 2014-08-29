@@ -10972,7 +10972,8 @@
 	</advantage>
 	<advantage version="2">
 		<name>Obsession</name>
-		<type>Physical</type>
+		<type>Mental</type>
+		<cr>12</cr>
 		<modifier version="1" enabled="no">
 			<name>Short term</name>
 			<cost type="points">-5</cost>
