@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 
 /** A Spell prerequisite. */
 public class SpellPrereq extends HasPrereq {
@@ -208,6 +209,8 @@ public class SpellPrereq extends HasPrereq {
 	@Override
 	public boolean satisfied(GURPSCharacter character, ListRow exclude, StringBuilder builder, String prefix) {
 		HashSet<String> colleges = new HashSet<>();
+		LinkedList<Spell> spellList = new LinkedList<>();
+		LinkedList<Spell> reducedSpellList = new LinkedList<>();
 		String techLevel = null;
 		int count = 0;
 		boolean satisfied;
@@ -230,23 +233,65 @@ public class SpellPrereq extends HasPrereq {
 				if (ok) {
 					if (mType == TAG_NAME) {
 						if (mStringCriteria.matches(spell.getName())) {
-							count++;
+							spellList.add(spell);
+							//count++;
 						}
 					} else if (mType == TAG_ANY) {
-						count++;
+						spellList.add(spell);
+						//count++;
 					} else if (mType == TAG_COLLEGE) {
 						if (mStringCriteria.matches(spell.getCollege())) {
-							count++;
+							spellList.add(spell);
+							//count++;
 						}
 					} else if (mType == TAG_COLLEGE_COUNT) {
-						colleges.add(spell.getCollege());
+						spellList.add(spell);
+						//colleges.add(spell.getCollege());
 					}
 				}
 			}
 		}
 
+		if (StringCompareType.IS == mStringCriteria.getType()) {
+			/*
+			 * We specifically exclude this case because this is the standard prerequirement
+			 * form and it is normally shown black even when the prereq of its prereq isn't met
+			 * and the prereq of this would be shown red. I don't want that to change.
+			 */
+			reducedSpellList = spellList;
+		} else {
+			boolean ok;
+			if (exclude instanceof Spell) {		
+				for (Spell spell in spellList) {
+					if (exclude.isMarkedWith(mType, spell, true)) {
+						continue;
+					}
+					spell.addMark(mType, (Spell)exclude);
+					if (spell.getPrereqs().satisfied(character, spell, null, prefix)) {
+						reducedSpellList.add(spell);
+					}
+					spell.removeMark(mType, (Spell)exclude);
+				}
+				
+			} else {
+				for (Spell spell in spellList) {
+					if (exclude.isMarkedWith(mType, spell, true)) {
+						continue;
+					}
+					if (spell.getPrereqs().satisfied(character, spell, null, prefix)) {
+						reducedSpellList.add(spell);
+					}
+			}
+		}
+
 		if (mType == TAG_COLLEGE_COUNT) {
+			for (Spell spell : reducedSpellList) {
+				colleges.add(spell.getCollege());
+			}
 			count = colleges.size();
+		}
+		else {
+			count = reducedSpellList.size();
 		}
 
 		satisfied = mQuantityCriteria.matches(count);
