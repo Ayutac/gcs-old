@@ -1136,6 +1136,10 @@ public class CharacterSheet extends JPanel implements ChangeListener, Scrollable
 			writeXMLText(out, Numbers.format(mCharacter.getWill()));
 		} else if (key.equals("FRIGHT_CHECK")) { //$NON-NLS-1$
 			writeXMLText(out, Numbers.format(mCharacter.getFrightCheck()));
+		} else if (key.equals("CONSCIOUS_CHECK")) { //$NON-NLS-1$
+			writeXMLText(out, Numbers.format(mCharacter.getConsciousCheck()));
+		} else if (key.equals("DEATH_CHECK")) { //$NON-NLS-1$
+			writeXMLText(out, Numbers.format(mCharacter.getDeathCheck()));
 		} else if (key.equals("BASIC_SPEED")) { //$NON-NLS-1$
 			writeXMLText(out, Numbers.format(mCharacter.getBasicSpeed()));
 		} else if (key.equals("BASIC_MOVE")) { //$NON-NLS-1$

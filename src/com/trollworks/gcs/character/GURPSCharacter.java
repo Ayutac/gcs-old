@@ -101,6 +101,8 @@ public class GURPSCharacter extends DataFile {
 	private static String						INCLUDE_KICK_UNDO;
 	@Localize("Include Kick w/Boots In Weapons")
 	private static String						INCLUDE_BOOTS_UNDO;
+	@Localize("Include Conscious/Death Check Rolls")
+	private static String						INCLUDE_DEATH_CHECK_ROLLS_UNDO;
 	@Localize("Unable to set a value for %s")
 	private static String						UNABLE_TO_SET_VALUE;
 
@@ -121,7 +123,8 @@ public class GURPSCharacter extends DataFile {
 	private static final String					TAG_TOTAL_POINTS						= "total_points";												//$NON-NLS-1$
 	private static final String					TAG_INCLUDE_PUNCH						= "include_punch";												//$NON-NLS-1$
 	private static final String					TAG_INCLUDE_KICK						= "include_kick";												//$NON-NLS-1$
-	private static final String					TAG_INCLUDE_BOOTS						= "include_kick_with_boots";									//$NON-NLS-1$
+	private static final String					TAG_INCLUDE_BOOTS						= "include_kick_with_boots";											//$NON-NLS-1$
+	private static final String					TAG_INCLUDE_DEATH_CHECK_ROLLS					= "include_death_check_roll";									//$NON-NLS-1$
 	private static final String					ATTRIBUTE_CARRIED						= "carried";													//$NON-NLS-1$
 	/** The prefix for all character IDs. */
 	public static final String					CHARACTER_PREFIX						= "gcs.";														//$NON-NLS-1$
@@ -134,7 +137,9 @@ public class GURPSCharacter extends DataFile {
 	/** The field ID for include kick changes. */
 	public static final String					ID_INCLUDE_KICK							= CHARACTER_PREFIX + "IncludeKickFeet";						//$NON-NLS-1$
 	/** The field ID for include kick with boots changes. */
-	public static final String					ID_INCLUDE_BOOTS						= CHARACTER_PREFIX + "IncludeKickBoots";						//$NON-NLS-1$
+	public static final String					ID_INCLUDE_BOOTS						= CHARACTER_PREFIX + "IncludeKickBoots";					//$NON-NLS-1$
+	/** The field ID for include conscious/death check rolls changes. */
+	public static final String					ID_INCLUDE_DEATH_CHECK_ROLLS					= CHARACTER_PREFIX + "IncludeDeathCheckRoll";						//$NON-NLS-1$
 	/**
 	 * The prefix used to indicate a point value is requested from {@link #getValueForID(String)}.
 	 */
@@ -167,6 +172,10 @@ public class GURPSCharacter extends DataFile {
 	public static final String					ID_WILL									= ATTRIBUTES_PREFIX + BonusAttributeType.WILL.name();
 	/** The field ID for fright check changes. */
 	public static final String					ID_FRIGHT_CHECK							= ATTRIBUTES_PREFIX + BonusAttributeType.FRIGHT_CHECK.name();
+	/** The field ID for conscious check changes. */
+	public static final String					ID_CONSCIOUS_CHECK							= ATTRIBUTES_PREFIX + BonusAttributeType.CONSCIOUS_CHECK.name();
+	/** The field ID for death check changes. */
+	public static final String					ID_DEATH_CHECK							= ATTRIBUTES_PREFIX + BonusAttributeType.DEATH_CHECK.name();
 	/** The field ID for basic speed changes. */
 	public static final String					ID_BASIC_SPEED							= ATTRIBUTES_PREFIX + BonusAttributeType.SPEED.name();
 	/** The field ID for basic move changes. */
@@ -278,6 +287,8 @@ public class GURPSCharacter extends DataFile {
 	private int									mWill;
 	private int									mWillBonus;
 	private int									mFrightCheckBonus;
+	private int									mConsciousCheckBonus;
+	private int									mDeathCheckBonus;
 	private int									mPerception;
 	private int									mPerceptionBonus;
 	private int									mVisionBonus;
@@ -325,6 +336,7 @@ public class GURPSCharacter extends DataFile {
 	private boolean								mIncludePunch;
 	private boolean								mIncludeKick;
 	private boolean								mIncludeKickBoots;
+	private boolean								mIncludeDeathCheckRolls;
 
 	/** Creates a new character with only default values set. */
 	public GURPSCharacter() {
@@ -363,6 +375,7 @@ public class GURPSCharacter extends DataFile {
 		mIncludePunch = true;
 		mIncludeKick = true;
 		mIncludeKickBoots = true;
+		mIncludeDeathCheckRolls = false;
 		mCachedWeightCarried = new WeightValue(0, SheetPreferences.getWeightUnits());
 		try {
 			mPageSettings = new PrintManager(PageOrientation.PORTRAIT, 0.5, LengthUnits.IN);
@@ -446,6 +459,8 @@ public class GURPSCharacter extends DataFile {
 					mIncludeKick = reader.readBoolean();
 				} else if (TAG_INCLUDE_BOOTS.equals(name)) {
 					mIncludeKickBoots = reader.readBoolean();
+				} else if (TAG_INCLUDE_DEATH_CHECK_ROLLS.equals(name)) {
+					mIncludeDeathCheckRolls = reader.readBoolean();
 				} else if (AdvantageList.TAG_ROOT.equals(name)) {
 					loadAdvantageList(reader, state);
 				} else if (SkillList.TAG_ROOT.equals(name)) {
@@ -568,6 +583,7 @@ public class GURPSCharacter extends DataFile {
 		out.simpleTag(TAG_INCLUDE_PUNCH, mIncludePunch);
 		out.simpleTag(TAG_INCLUDE_KICK, mIncludeKick);
 		out.simpleTag(TAG_INCLUDE_BOOTS, mIncludeKickBoots);
+		out.simpleTag(TAG_INCLUDE_DEATH_CHECK_ROLLS, mIncludeDeathCheckRolls);
 
 		saveList(AdvantageList.TAG_ROOT, mAdvantages, out);
 		saveList(SkillList.TAG_ROOT, mSkills, out);
@@ -653,6 +669,10 @@ public class GURPSCharacter extends DataFile {
 			return new Integer(getWill());
 		} else if (ID_FRIGHT_CHECK.equals(id)) {
 			return new Integer(getFrightCheck());
+		} else if (ID_CONSCIOUS_CHECK.equals(id)) {
+			return new Integer(getConsciousCheck());
+		} else if (ID_DEATH_CHECK.equals(id)) {
+			return new Integer(getDeathCheck());
 		} else if (ID_ATTRIBUTE_POINTS.equals(id)) {
 			return new Integer(getAttributePoints());
 		} else if (ID_ADVANTAGE_POINTS.equals(id)) {
@@ -1799,6 +1819,20 @@ public class GURPSCharacter extends DataFile {
 		}
 	}
 
+	/** @return Whether to include the kick w/boots natural weapon or not. */
+	public boolean includeDeathCheckRolls() {
+		return mIncludeDeathCheckRolls;
+	}
+
+	/** @param include Whether to include the kick w/boots natural weapon or not. */
+	public void setIncludeDeathCheckRolls(boolean include) {
+		if (mIncludeDeathCheckRolls != include) {
+			postUndoEdit(INCLUDE_DEATH_CHECK_ROLLS_UNDO, ID_INCLUDE_DEATH_CHECK_ROLLSS, new Boolean(mIncludeDeathCheckRolls), new Boolean(include));
+			mIncludeDeathCheckRolls = include;
+			notifySingle(ID_INCLUDE_DEATH_CHECK_ROLLSS, new Boolean(mIncludeDeathCheckRolls));
+		}
+	}
+
 	/** @return The hit points (HP). */
 	public int getHitPoints() {
 		return getStrength() + mHitPoints + mHitPointBonus;
@@ -1992,6 +2026,46 @@ public class GURPSCharacter extends DataFile {
 			mFrightCheckBonus = bonus;
 			startNotify();
 			notify(ID_FRIGHT_CHECK, new Integer(getFrightCheck()));
+			endNotify();
+		}
+	}
+
+	/** @return The conscious check. */
+	public int getConsciousCheck() {
+		return getHealthPoints() + mConsciousCheckBonus;
+	}
+
+	/** @return The conscious check bonus. */
+	public int getConsciousCheckBonus() {
+		return mConsciousCheckBonus;
+	}
+
+	/** @param bonus The new conscious check bonus. */
+	public void setConsciousCheckBonus(int bonus) {
+		if (mConsciousCheckBonus != bonus) {
+			mConsciousCheckBonus = bonus;
+			startNotify();
+			notify(ID_CONSCIOUS_CHECK, new Integer(getConsciousCheck()));
+			endNotify();
+		}
+	}
+
+	/** @return The death check. */
+	public int getDeathCheck() {
+		return getHealthPoints() + mDeathCheckBonus;
+	}
+
+	/** @return The death check bonus. */
+	public int getDeathCheckBonus() {
+		return mDeathCheckBonus;
+	}
+
+	/** @param bonus The new fright check bonus. */
+	public void setDeathCheckBonus(int bonus) {
+		if (mDeathCheckBonus != bonus) {
+			mDeathCheckBonus = bonus;
+			startNotify();
+			notify(ID_DEATH_CHECK, new Integer(getDeathCheck()));
 			endNotify();
 		}
 	}

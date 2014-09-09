@@ -65,6 +65,7 @@ public class EditMenuProvider implements MenuProvider {
 		cmds.add(AddNaturalPunchCommand.INSTANCE);
 		cmds.add(AddNaturalKickCommand.INSTANCE);
 		cmds.add(AddNaturalKickWithBootsCommand.INSTANCE);
+		cmds.add(AddDeathCheckRollsCommand.INSTANCE);
 		if (!Platform.isMacintosh()) {
 			cmds.add(PreferencesCommand.INSTANCE);
 		}
@@ -98,6 +99,7 @@ public class EditMenuProvider implements MenuProvider {
 		menu.add(new DynamicCheckBoxMenuItem(AddNaturalPunchCommand.INSTANCE));
 		menu.add(new DynamicCheckBoxMenuItem(AddNaturalKickCommand.INSTANCE));
 		menu.add(new DynamicCheckBoxMenuItem(AddNaturalKickWithBootsCommand.INSTANCE));
+		menu.add(new DynamicCheckBoxMenuItem(AddDeathCheckRollsCommand.INSTANCE));
 		if (!Platform.isMacintosh()) {
 			menu.addSeparator();
 			menu.add(new DynamicMenuItem(PreferencesCommand.INSTANCE));

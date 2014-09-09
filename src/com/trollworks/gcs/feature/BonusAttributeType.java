@@ -154,6 +154,20 @@ public enum BonusAttributeType {
 			return SM_TITLE;
 		}
 	};
+	/** The Conscious Check attribute. */
+	CONSCIOUS_CHECK {
+		@Override
+		public String toString() {
+			return CONSCIOUS_CHECK_TITLE;
+		}
+	};
+	/** The DEATH Check attribute. */
+	DEATH_CHECK {
+		@Override
+		public String toString() {
+			return DEATH_CHECK_TITLE;
+		}
+	};
 
 	@Localize("to ST")
 	static String	ST_TITLE;
@@ -193,6 +207,10 @@ public enum BonusAttributeType {
 	static String	HP_TITLE;
 	@Localize("to size modifier")
 	static String	SM_TITLE;
+	@Localize("to conscious checks")
+	static String	CONSCIOUS_CHECK_TITLE;
+	@Localize("to death checks")
+	static String	DEATH_CHECK_TITLE;
 
 	static {
 		Localization.initialize();
