@@ -110,6 +110,12 @@ public class SheetPreferences extends PreferencePanel implements ActionListener,
 	private static String				AND;
 	@Localize("for display of generated units")
 	private static String				FOR_UNIT_DISPLAY;
+	@Localize("The maximal number of decimal digits")
+	private static String				DECIMALS_TOOLTIP;
+	@Localize("At most")
+	private static String				AT_MOST;
+	@Localize("decimals to display")
+	private static String				DECIMALS_TO_DISPLAY;
 	@Localize("Character point total display includes unspent points")
 	private static String				TOTAL_POINTS_INCLUDES_UNSPENT_POINTS;
 
@@ -142,6 +148,12 @@ public class SheetPreferences extends PreferencePanel implements ActionListener,
 	/** The default weight units preference key. */
 	public static final String			WEIGHT_UNITS_PREF_KEY				= Preferences.getModuleKey(MODULE, WEIGHT_UNITS_KEY);
 	private static final WeightUnits	DEFAULT_WEIGHT_UNITS				= WeightUnits.LB;
+	private static final String			DECIMALS_KEY					= "Decimals";													//$NON-NLS-1$
+	/** The default decimals preference key. */
+	public static final String			DECIMALS_PREF_KEY				= Preferences.getModuleKey(MODULE, DECIMALS_KEY);
+	private static final int	DEFAULT_DECIMALS				= Numbers.DEFAULT_DECIMALS;
+	private static final int	MIN_DECIMALS				= 0;
+	private static final int	MAX_DECIMALS				= Numbers.DEFAULT_DECIMALS;
 	private static final String			TOTAL_POINTS_DISPLAY_KEY			= "TotalPointsIncludesUnspentPoints";								//$NON-NLS-1$
 	/** The optional dice rules preference key. */
 	public static final String			TOTAL_POINTS_DISPLAY_PREF_KEY		= Preferences.getModuleKey(MODULE, TOTAL_POINTS_DISPLAY_KEY);
@@ -161,6 +173,7 @@ public class SheetPreferences extends PreferencePanel implements ActionListener,
 	private JComboBox<String>			mPNGResolutionCombo;
 	private JComboBox<String>			mLengthUnitsCombo;
 	private JComboBox<String>			mWeightUnitsCombo;
+	private JComboBox<String>			mDecimalsCombo;
 	private JCheckBox					mUseHTMLTemplateOverride;
 	private JTextField					mHTMLTemplatePath;
 	private JButton						mHTMLTemplatePicker;
@@ -184,6 +197,11 @@ public class SheetPreferences extends PreferencePanel implements ActionListener,
 	/** @return The default weight units to use. */
 	public static WeightUnits getWeightUnits() {
 		return Enums.extract(Preferences.getInstance().getStringValue(MODULE, WEIGHT_UNITS_KEY), WeightUnits.values(), DEFAULT_WEIGHT_UNITS);
+	}
+
+	/** @return The default decimals to use. */
+	public static int getDecimals() {
+		return Preferences.getInstance().getIntValue(MODULE, DECIMALS_KEY, DEFAULT_DECIMALS);
 	}
 
 	private static void adjustOptionalDiceRulesProperty(boolean use) {
@@ -293,6 +311,13 @@ public class SheetPreferences extends PreferencePanel implements ActionListener,
 		mWeightUnitsCombo = createWeightUnitsPopup();
 		row.add(mWeightUnitsCombo);
 		row.add(createLabel(FOR_UNIT_DISPLAY, null));
+		column.add(row);
+		
+		row = new FlexRow();
+		row.add(createLabel(AT_MOST, null));
+		mDecimalsCombo = createDecimalsPopup();
+		row.add(mDecimalsCombo);
+		row.add(createLabel(DECIMALS_TO_DISPLAY, null));
 		column.add(row);
 
 		mAutoName = createCheckBox(AUTO_NAME, null, isNewCharacterAutoNamed());
@@ -416,6 +441,19 @@ public class SheetPreferences extends PreferencePanel implements ActionListener,
 		return combo;
 	}
 
+	private JComboBox<Integer> createDecimalsPopup() {
+		JComboBox<Integer> combo = new JComboBox<>();
+		setupCombo(combo, DECIMALS_TOOLTIP);
+		for (int decimals = MIN_DECIMALS; decimals <= MAX_DECIMALS; decimals++) {
+			combo.addItem(decimals);
+		}
+		combo.setSelectedIndex(getDecimals()-MIN_DECIMALS);
+		combo.addActionListener(this);
+		combo.setMaximumRowCount(combo.getItemCount());
+		UIUtilities.setOnlySize(combo, combo.getPreferredSize());
+		return combo;
+	}
+
 	private JTextField createTextField(String tooltip, String value) {
 		JTextField field = new JTextField(value);
 		field.setToolTipText(tooltip);
@@ -442,6 +480,9 @@ public class SheetPreferences extends PreferencePanel implements ActionListener,
 			Preferences.getInstance().setValue(MODULE, LENGTH_UNITS_KEY, Enums.toId(LengthUnits.values()[mLengthUnitsCombo.getSelectedIndex()]));
 		} else if (source == mWeightUnitsCombo) {
 			Preferences.getInstance().setValue(MODULE, WEIGHT_UNITS_KEY, Enums.toId(WeightUnits.values()[mWeightUnitsCombo.getSelectedIndex()]));
+		} else if (source == mDecimalsCombo) {
+			Preferences.getInstance().setValue(MODULE, DECIMALS_KEY, mDecimalsCombo.getSelectedItem());
+			Numbers.setMaximumFractionDigits((Integer)(mDecimalsCombo.getSelectedItem()))
 		} else if (source == mHTMLTemplatePicker) {
 			File file = StdFileDialog.choose(this, true, SELECT_HTML_TEMPLATE, null, null, "html", "htm"); //$NON-NLS-1$ //$NON-NLS-2$
 			if (file != null) {
@@ -466,6 +507,7 @@ public class SheetPreferences extends PreferencePanel implements ActionListener,
 		}
 		mLengthUnitsCombo.setSelectedIndex(DEFAULT_LENGTH_UNITS.ordinal());
 		mWeightUnitsCombo.setSelectedIndex(DEFAULT_WEIGHT_UNITS.ordinal());
+		mWeightUnitsCombo.setSelectedIndex(DEFAULT_DECIMALS-MIN_DECIMALS);
 		mUseHTMLTemplateOverride.setSelected(false);
 		mAutoName.setSelected(DEFAULT_AUTO_NAME);
 		mUseOptionalDiceRules.setSelected(DEFAULT_OPTIONAL_DICE_RULES);
