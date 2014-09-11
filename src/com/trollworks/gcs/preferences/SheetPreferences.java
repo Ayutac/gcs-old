@@ -116,6 +116,10 @@ public class SheetPreferences extends PreferencePanel implements ActionListener,
 	private static String				AT_MOST;
 	@Localize("decimals to display")
 	private static String				DECIMALS_TO_DISPLAY;
+	@Localize("<html><body>How to display attribute points.<br><ul><li><b>"+AttributeModes.CLASSIC_NAME+":</b> "+AttributeModes.CLASSIC_DESC+"</li><li><b>"+AttributeModes.NEG_ATTR_NAME+":</b> "+AttributeModes.NEG_ATTR_DESC+"</li><li><b>"+AttributeModes.NEG_ATTR_C_NAME+":</b> "+AttributeModes.NEG_ATTR_C_DESC+"</li><li><b>"+AttributeModes.DISADV_NAME+":</b> "+AttributeModes.DISADV_DESC+"</li><li><b>"+AttributeModes.DISADV_C_NAME+":</b> "+AttributeModes.DISADV_C_DESC+"</li></ul></body></html>")
+	private static String				ATTRIBUTE_MODES_TOOLTIP;
+	@Localize("Attribute mode:")
+	private static String				ATTRIBUTE_MODE;
 	@Localize("Character point total display includes unspent points")
 	private static String				TOTAL_POINTS_INCLUDES_UNSPENT_POINTS;
 
@@ -154,6 +158,10 @@ public class SheetPreferences extends PreferencePanel implements ActionListener,
 	private static final int	DEFAULT_DECIMALS				= Numbers.DEFAULT_DECIMALS;
 	private static final int	MIN_DECIMALS				= 0;
 	private static final int	MAX_DECIMALS				= Numbers.DEFAULT_DECIMALS;
+	private static final String			ATTRIBUTE_MODES_KEY					= "AttributeMode";													//$NON-NLS-1$
+	/** The default decimals preference key. */
+	public static final String			ATTRIBUTE_MODES_PREF_KEY				= Preferences.getModuleKey(MODULE, ATTRIBUTE_MODES_KEY);
+	private static final AttributeModes	DEFAULT_ATTRIBUTE_MODES				= AttributeModes.CLASSIC;
 	private static final String			TOTAL_POINTS_DISPLAY_KEY			= "TotalPointsIncludesUnspentPoints";								//$NON-NLS-1$
 	/** The optional dice rules preference key. */
 	public static final String			TOTAL_POINTS_DISPLAY_PREF_KEY		= Preferences.getModuleKey(MODULE, TOTAL_POINTS_DISPLAY_KEY);
@@ -173,7 +181,8 @@ public class SheetPreferences extends PreferencePanel implements ActionListener,
 	private JComboBox<String>			mPNGResolutionCombo;
 	private JComboBox<String>			mLengthUnitsCombo;
 	private JComboBox<String>			mWeightUnitsCombo;
-	private JComboBox<String>			mDecimalsCombo;
+	private JComboBox<String>			mDecimalsCombo; //FIXME
+	private JComboBox<String>			mAttributeModesCombo;
 	private JCheckBox					mUseHTMLTemplateOverride;
 	private JTextField					mHTMLTemplatePath;
 	private JButton						mHTMLTemplatePicker;
@@ -202,6 +211,11 @@ public class SheetPreferences extends PreferencePanel implements ActionListener,
 	/** @return The default decimals to use. */
 	public static int getDecimals() {
 		return Preferences.getInstance().getIntValue(MODULE, DECIMALS_KEY, DEFAULT_DECIMALS);
+	}
+
+	/** @return The default attribute mode to use. */
+	public static AttributeModes getAttributeModes() {
+		return Enums.extract(Preferences.getInstance().getStringValue(MODULE, ATTRIBUTE_MODES_KEY), AttributeModes.values(), DEFAULT_ATTRIBUTE_MODES);
 	}
 
 	private static void adjustOptionalDiceRulesProperty(boolean use) {
@@ -318,6 +332,12 @@ public class SheetPreferences extends PreferencePanel implements ActionListener,
 		mDecimalsCombo = createDecimalsPopup();
 		row.add(mDecimalsCombo);
 		row.add(createLabel(DECIMALS_TO_DISPLAY, null));
+		column.add(row);
+		
+		row = new FlexRow();
+		row.add(createLabel(ATTRIBUTE_MODE, null));
+		mDecimalsCombo = createAttributeModesPopup();
+		row.add(mAttributeModesCombo);
 		column.add(row);
 
 		mAutoName = createCheckBox(AUTO_NAME, null, isNewCharacterAutoNamed());
@@ -454,6 +474,19 @@ public class SheetPreferences extends PreferencePanel implements ActionListener,
 		return combo;
 	}
 
+	private JComboBox<String> createAttributeModesPopup() {
+		JComboBox<String> combo = new JComboBox<>();
+		setupCombo(combo, ATTRIBUTE_MODES_TOOLTIP);
+		for (AttributeModes am : AttributeModes.values()) {
+			combo.addItem(am.getName());
+		}
+		combo.setSelectedIndex(getAttributeModes().ordinal());
+		combo.addActionListener(this);
+		combo.setMaximumRowCount(combo.getItemCount());
+		UIUtilities.setOnlySize(combo, combo.getPreferredSize());
+		return combo;
+	}
+
 	private JTextField createTextField(String tooltip, String value) {
 		JTextField field = new JTextField(value);
 		field.setToolTipText(tooltip);
@@ -482,7 +515,9 @@ public class SheetPreferences extends PreferencePanel implements ActionListener,
 			Preferences.getInstance().setValue(MODULE, WEIGHT_UNITS_KEY, Enums.toId(WeightUnits.values()[mWeightUnitsCombo.getSelectedIndex()]));
 		} else if (source == mDecimalsCombo) {
 			Preferences.getInstance().setValue(MODULE, DECIMALS_KEY, mDecimalsCombo.getSelectedItem());
-			Numbers.setMaximumFractionDigits((Integer)(mDecimalsCombo.getSelectedItem()))
+			Numbers.setMaximumFractionDigits((Integer)(mDecimalsCombo.getSelectedItem())) //FIXME
+		} else if (source == mAttributeModesCombo) {
+			Preferences.getInstance().setValue(MODULE, ATTRIBUTE_MODES_KEY, Enums.toId(AttributeModes.values()[mAttributeModesCombo.getSelectedIndex()]));
 		} else if (source == mHTMLTemplatePicker) {
 			File file = StdFileDialog.choose(this, true, SELECT_HTML_TEMPLATE, null, null, "html", "htm"); //$NON-NLS-1$ //$NON-NLS-2$
 			if (file != null) {
@@ -507,7 +542,8 @@ public class SheetPreferences extends PreferencePanel implements ActionListener,
 		}
 		mLengthUnitsCombo.setSelectedIndex(DEFAULT_LENGTH_UNITS.ordinal());
 		mWeightUnitsCombo.setSelectedIndex(DEFAULT_WEIGHT_UNITS.ordinal());
-		mWeightUnitsCombo.setSelectedIndex(DEFAULT_DECIMALS-MIN_DECIMALS);
+		mWeightUnitsCombo.setSelectedIndex(DEFAULT_DECIMALS-MIN_DECIMALS); //FIXME
+		mAttributeModesCombo.setSelectedIndex(DEFAULT_ATTRIBUTE_MODES.ordinal());
 		mUseHTMLTemplateOverride.setSelected(false);
 		mAutoName.setSelected(DEFAULT_AUTO_NAME);
 		mUseOptionalDiceRules.setSelected(DEFAULT_OPTIONAL_DICE_RULES);
