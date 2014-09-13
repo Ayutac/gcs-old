@@ -47,6 +47,7 @@
 		<difficulty>IQ/A</difficulty>
 		<points>1</points>
 		<reference>B174</reference>
+		<notes>Gives +1 for each point the user's IQ is about the one he want's to fool or -1 for each points his IQ is below the other ones.</notes>
 		<categories>
 			<category>Social</category>
 			<category>Spy</category>
