@@ -153,14 +153,14 @@ public enum BonusAttributeType {
 		public String toString() {
 			return SM_TITLE;
 		}
-	};
+	},
 	/** The Conscious Check attribute. */
 	CONSCIOUS_CHECK {
 		@Override
 		public String toString() {
 			return CONSCIOUS_CHECK_TITLE;
 		}
-	};
+	},
 	/** The DEATH Check attribute. */
 	DEATH_CHECK {
 		@Override
