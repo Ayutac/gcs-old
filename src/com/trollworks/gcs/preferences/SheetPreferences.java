@@ -336,7 +336,7 @@ public class SheetPreferences extends PreferencePanel implements ActionListener,
 		
 		row = new FlexRow();
 		row.add(createLabel(ATTRIBUTE_MODE, null));
-		mDecimalsCombo = createAttributeModesPopup();
+		mAttributeModesCombo = createAttributeModesPopup();
 		row.add(mAttributeModesCombo);
 		column.add(row);
 
