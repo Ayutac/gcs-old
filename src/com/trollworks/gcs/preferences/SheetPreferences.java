@@ -116,7 +116,7 @@ public class SheetPreferences extends PreferencePanel implements ActionListener,
 	private static String				AT_MOST;
 	@Localize("decimals to display")
 	private static String				DECIMALS_TO_DISPLAY;
-	@Localize("<html><body>How to display attribute points.<br><ul><li><b>"+AttributeModes.CLASSIC_NAME+":</b> "+AttributeModes.CLASSIC_DESC+"</li><li><b>"+AttributeModes.NEG_ATTR_NAME+":</b> "+AttributeModes.NEG_ATTR_DESC+"</li><li><b>"+AttributeModes.NEG_ATTR_C_NAME+":</b> "+AttributeModes.NEG_ATTR_C_DESC+"</li><li><b>"+AttributeModes.DISADV_NAME+":</b> "+AttributeModes.DISADV_DESC+"</li><li><b>"+AttributeModes.DISADV_C_NAME+":</b> "+AttributeModes.DISADV_C_DESC+"</li></ul></body></html>")
+	@Localize("<html><body>How to display attribute points.<br><ul><li><b>Classic:</b> Classic mode, i.e. both positive and negative attributes will be displayed in Attribute.</li><li><b>Negative Attributes:</b> Negative Attributes will be displayed seperated from positive attributes.</li><li><b>Negative Attributes (complete):</b> Same as Negative Attributes, but will count in the attribute (dis)advantages to (negative) attributes instead of counting them to (dis)advantages.</li><li><b>Disadvantages:</b> Count negative attributes into disadvantages.</li><li><b>Disadvantages (complete):</b> Same as Disadvantages, but counts attributes into advantages as well.</li></ul></body></html>")
 	private static String				ATTRIBUTE_MODES_TOOLTIP;
 	@Localize("Attribute mode:")
 	private static String				ATTRIBUTE_MODE;
@@ -181,7 +181,7 @@ public class SheetPreferences extends PreferencePanel implements ActionListener,
 	private JComboBox<String>			mPNGResolutionCombo;
 	private JComboBox<String>			mLengthUnitsCombo;
 	private JComboBox<String>			mWeightUnitsCombo;
-	private JComboBox<String>			mDecimalsCombo; //FIXME
+	private JComboBox<Integer>			mDecimalsCombo;
 	private JComboBox<String>			mAttributeModesCombo;
 	private JCheckBox					mUseHTMLTemplateOverride;
 	private JTextField					mHTMLTemplatePath;
@@ -514,8 +514,8 @@ public class SheetPreferences extends PreferencePanel implements ActionListener,
 		} else if (source == mWeightUnitsCombo) {
 			Preferences.getInstance().setValue(MODULE, WEIGHT_UNITS_KEY, Enums.toId(WeightUnits.values()[mWeightUnitsCombo.getSelectedIndex()]));
 		} else if (source == mDecimalsCombo) {
-			Preferences.getInstance().setValue(MODULE, DECIMALS_KEY, mDecimalsCombo.getSelectedItem());
-			Numbers.setMaximumFractionDigits((Integer)(mDecimalsCombo.getSelectedItem())) //FIXME
+			Preferences.getInstance().setValue(MODULE, DECIMALS_KEY, (Integer)(mDecimalsCombo.getSelectedItem()));
+			Numbers.setMaximumFractionDigits((Integer)(mDecimalsCombo.getSelectedItem()));
 		} else if (source == mAttributeModesCombo) {
 			Preferences.getInstance().setValue(MODULE, ATTRIBUTE_MODES_KEY, Enums.toId(AttributeModes.values()[mAttributeModesCombo.getSelectedIndex()]));
 		} else if (source == mHTMLTemplatePicker) {
@@ -542,7 +542,7 @@ public class SheetPreferences extends PreferencePanel implements ActionListener,
 		}
 		mLengthUnitsCombo.setSelectedIndex(DEFAULT_LENGTH_UNITS.ordinal());
 		mWeightUnitsCombo.setSelectedIndex(DEFAULT_WEIGHT_UNITS.ordinal());
-		mWeightUnitsCombo.setSelectedIndex(DEFAULT_DECIMALS-MIN_DECIMALS); //FIXME
+		mDecimalsCombo.setSelectedIndex(DEFAULT_DECIMALS-MIN_DECIMALS);
 		mAttributeModesCombo.setSelectedIndex(DEFAULT_ATTRIBUTE_MODES.ordinal());
 		mUseHTMLTemplateOverride.setSelected(false);
 		mAutoName.setSelected(DEFAULT_AUTO_NAME);
