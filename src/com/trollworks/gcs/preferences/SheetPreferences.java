@@ -478,7 +478,7 @@ public class SheetPreferences extends PreferencePanel implements ActionListener,
 		JComboBox<String> combo = new JComboBox<>();
 		setupCombo(combo, ATTRIBUTE_MODES_TOOLTIP);
 		for (AttributeModes am : AttributeModes.values()) {
-			combo.addItem(am.getName());
+			combo.addItem(am.getLocalizedName());
 		}
 		combo.setSelectedIndex(getAttributeModes().ordinal());
 		combo.addActionListener(this);
