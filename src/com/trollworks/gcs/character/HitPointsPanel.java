@@ -66,7 +66,7 @@ public class HitPointsPanel extends DropPanel {
 	private static String	HP_DEAD_TOOLTIP;
 	@Localize("Conscious Roll:")
 	private static String	CONSCIOUS_CHECK;
-	@Localize("<html><body>When at negative or zero FP or HP, roll against this to stay conscious.</body></html>")
+	@Localize("<html><body>When at negative or zero FP or HP,<br>roll against this to stay conscious.</body></html>")
 	private static String	CONSCIOUS_CHECK_TOOLTIP;
 	@Localize("Life Roll:")
 	private static String	DEATH_CHECK;
@@ -121,11 +121,9 @@ public class HitPointsPanel extends DropPanel {
 		createLabelAndDisabledField(this, character, GURPSCharacter.ID_DEATH_CHECK_3_HIT_POINTS, HP_DEATH_CHECK_3, HP_DEATH_CHECK_3_TOOLTIP, SwingConstants.RIGHT);
 		createLabelAndDisabledField(this, character, GURPSCharacter.ID_DEATH_CHECK_4_HIT_POINTS, HP_DEATH_CHECK_4, HP_DEATH_CHECK_4_TOOLTIP, SwingConstants.RIGHT);
 		createLabelAndDisabledField(this, character, GURPSCharacter.ID_DEAD_HIT_POINTS, HP_DEAD, HP_DEAD_TOOLTIP, SwingConstants.RIGHT);
-		if (character.includeDeathCheckRolls()) {
-			createDivider();
-			createLabelAndDisabledField(this, character, GURPSCharacter.ID_CONSCIOUS_CHECK, CONSCIOUS_CHECK, CONSCIOUS_CHECK_TOOLTIP, SwingConstants.RIGHT);
-			createLabelAndDisabledField(this, character, GURPSCharacter.ID_DEATH_CHECK, DEATH_CHECK, DEATH_CHECK_TOOLTIP, SwingConstants.RIGHT);
-		}
+		createDivider();
+		createLabelAndDisabledField(this, character, GURPSCharacter.ID_CONSCIOUS_CHECK, CONSCIOUS_CHECK, CONSCIOUS_CHECK_TOOLTIP, SwingConstants.RIGHT);
+		createLabelAndDisabledField(this, character, GURPSCharacter.ID_DEATH_CHECK, DEATH_CHECK, DEATH_CHECK_TOOLTIP, SwingConstants.RIGHT);
 	}
 
 	@Override
