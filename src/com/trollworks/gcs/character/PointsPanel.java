@@ -34,15 +34,19 @@ public class PointsPanel extends DropPanel implements NotifierTarget {
 	private static String	POINTS;
 	@Localize("Attributes:")
 	private static String	ATTRIBUTE_POINTS;
-	@Localize("A summary of all points spent on attributes for this character")
+	@Localize("<html><body>Attribute Mode:<br><ul><li><b>Classic:</b> A summary of all points spent on attributes for this character</li><li><b>Neg. Attr.:</b> A summary of all points spent on positive attributes for this character</li><li><b>Neg. Attr. (complete):</b> A summary of all points spent on positive attributes and attribute advantages</li><li><b>Disadvantages:</b> A summary of all points spent on positive attributes for this character</li><li><b>Disadvantages (complete):</b> Not used</li></ul></body></html>")
 	private static String	ATTRIBUTE_POINTS_TOOLTIP;
+	@Localize("Neg. Attr.:")
+	private static String	NEGATIVE_ATTRIBUTE_POINTS;
+	@Localize("<html><body>Attribute Mode:<br><ul><li><b>Classic:</b> Not used</li><li><b>Neg. Attr.:</b> A summary of all points spent on negative attributes for this character</li><li><b>Neg. Attr. (complete):</b> A summary of all points spent on negative attributes and attribute disadvantages</li><li><b>Disadvantages:</b> Not used</li><li><b>Disadvantages (complete):</b> Not used</li></ul></body></html>")
+	private static String	NEGATIVE_ATTRIBUTE_POINTS_TOOLTIP;
 	@Localize("Advantages:")
 	private static String	ADVANTAGE_POINTS;
-	@Localize("A summary of all points spent on advantages for this character")
+	@Localize("<html><body>Attribute Mode:<br><ul><li><b>Classic:</b> A summary of all points spent on advantages for this character</li><li><b>Neg. Attr.:</b> A summary of all points spent on advantages for this character</li><li><b>Neg. Attr. (complete):</b> A summary of all points spent on advantages for this character, excluding attribute advantages</li><li><b>Disadvantages:</b> A summary of all points spent on advantages for this character</li><li><b>Disadvantages (complete):</b> A summary of all points spent on advantages for this character including attributes</li></ul></body></html>")
 	private static String	ADVANTAGE_POINTS_TOOLTIP;
 	@Localize("Disadvantages:")
 	private static String	DISADVANTAGE_POINTS;
-	@Localize("A summary of all points spent on disadvantages for this character")
+	@Localize("<html><body>Attribute Mode:<br><ul><li><b>Classic:</b> A summary of all points spent on disadvantages for this character</li><li><b>Neg. Attr.:</b> A summary of all points spent on disadvantages for this character</li><li><b>Neg. Attr. (complete):</b> A summary of all points spent on disadvantages for this character, excluding attribute disadvantages</li><li><b>Disadvantages:</b> A summary of all points spent on disadvantages for this character including negative attributes</li><li><b>Disadvantages (complete):</b> A summary of all points spent on disadvantages for this character including negative attributes</li></ul></body></html>")
 	private static String	DISADVANTAGE_POINTS_TOOLTIP;
 	@Localize("Quirks:")
 	private static String	QUIRK_POINTS;
@@ -81,6 +85,7 @@ public class PointsPanel extends DropPanel implements NotifierTarget {
 		mCharacter = character;
 		createLabelAndDisabledField(this, character, GURPSCharacter.ID_RACE_POINTS, RACE_POINTS, RACE_POINTS_TOOLTIP, SwingConstants.RIGHT);
 		createLabelAndDisabledField(this, character, GURPSCharacter.ID_ATTRIBUTE_POINTS, ATTRIBUTE_POINTS, ATTRIBUTE_POINTS_TOOLTIP, SwingConstants.RIGHT);
+		createLabelAndDisabledField(this, character, GURPSCharacter.ID_NEGATIVE_ATTRIBUTE_POINTS, NEGATIVE_ATTRIBUTE_POINTS, NEGATIVE_ATTRIBUTE_POINTS_TOOLTIP, SwingConstants.RIGHT);
 		createLabelAndDisabledField(this, character, GURPSCharacter.ID_ADVANTAGE_POINTS, ADVANTAGE_POINTS, ADVANTAGE_POINTS_TOOLTIP, SwingConstants.RIGHT);
 		createLabelAndDisabledField(this, character, GURPSCharacter.ID_DISADVANTAGE_POINTS, DISADVANTAGE_POINTS, DISADVANTAGE_POINTS_TOOLTIP, SwingConstants.RIGHT);
 		createLabelAndDisabledField(this, character, GURPSCharacter.ID_QUIRK_POINTS, QUIRK_POINTS, QUIRK_POINTS_TOOLTIP, SwingConstants.RIGHT);

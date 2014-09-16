@@ -262,7 +262,7 @@ public class SpellPrereq extends HasPrereq {
 		} else {
 			boolean ok;
 			if (exclude instanceof Spell) {		
-				for (Spell spell in spellList) {
+				for (Spell spell : spellList) {
 					if (exclude.isMarkedWith(mType, spell, true)) {
 						continue;
 					}
@@ -274,13 +274,14 @@ public class SpellPrereq extends HasPrereq {
 				}
 				
 			} else {
-				for (Spell spell in spellList) {
+				for (Spell spell : spellList) {
 					if (exclude.isMarkedWith(mType, spell, true)) {
 						continue;
 					}
 					if (spell.getPrereqs().satisfied(character, spell, null, prefix)) {
 						reducedSpellList.add(spell);
 					}
+				}
 			}
 		}
 

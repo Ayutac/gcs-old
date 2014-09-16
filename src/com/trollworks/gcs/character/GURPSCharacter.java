@@ -29,6 +29,7 @@ import com.trollworks.gcs.feature.SpellBonus;
 import com.trollworks.gcs.feature.WeaponBonus;
 import com.trollworks.gcs.modifier.Modifier;
 import com.trollworks.gcs.preferences.SheetPreferences;
+import com.trollworks.gcs.preferences.AttributeModes;
 import com.trollworks.gcs.skill.Skill;
 import com.trollworks.gcs.skill.SkillList;
 import com.trollworks.gcs.skill.Technique;
@@ -101,8 +102,6 @@ public class GURPSCharacter extends DataFile {
 	private static String						INCLUDE_KICK_UNDO;
 	@Localize("Include Kick w/Boots In Weapons")
 	private static String						INCLUDE_BOOTS_UNDO;
-	@Localize("Include Conscious/Death Check Rolls")
-	private static String						INCLUDE_DEATH_CHECK_ROLLS_UNDO;
 	@Localize("Unable to set a value for %s")
 	private static String						UNABLE_TO_SET_VALUE;
 
@@ -124,7 +123,6 @@ public class GURPSCharacter extends DataFile {
 	private static final String					TAG_INCLUDE_PUNCH						= "include_punch";												//$NON-NLS-1$
 	private static final String					TAG_INCLUDE_KICK						= "include_kick";												//$NON-NLS-1$
 	private static final String					TAG_INCLUDE_BOOTS						= "include_kick_with_boots";											//$NON-NLS-1$
-	private static final String					TAG_INCLUDE_DEATH_CHECK_ROLLS					= "include_death_check_roll";									//$NON-NLS-1$
 	private static final String					ATTRIBUTE_CARRIED						= "carried";													//$NON-NLS-1$
 	/** The prefix for all character IDs. */
 	public static final String					CHARACTER_PREFIX						= "gcs.";														//$NON-NLS-1$
@@ -138,8 +136,6 @@ public class GURPSCharacter extends DataFile {
 	public static final String					ID_INCLUDE_KICK							= CHARACTER_PREFIX + "IncludeKickFeet";						//$NON-NLS-1$
 	/** The field ID for include kick with boots changes. */
 	public static final String					ID_INCLUDE_BOOTS						= CHARACTER_PREFIX + "IncludeKickBoots";					//$NON-NLS-1$
-	/** The field ID for include conscious/death check rolls changes. */
-	public static final String					ID_INCLUDE_DEATH_CHECK_ROLLS					= CHARACTER_PREFIX + "IncludeDeathCheckRoll";						//$NON-NLS-1$
 	/**
 	 * The prefix used to indicate a point value is requested from {@link #getValueForID(String)}.
 	 */
@@ -175,7 +171,9 @@ public class GURPSCharacter extends DataFile {
 	/** The field ID for conscious check changes. */
 	public static final String					ID_CONSCIOUS_CHECK							= ATTRIBUTES_PREFIX + BonusAttributeType.CONSCIOUS_CHECK.name();
 	/** The field ID for death check changes. */
-	public static final String					ID_DEATH_CHECK							= ATTRIBUTES_PREFIX + BonusAttributeType.DEATH_CHECK.name();
+	public static final String					ID_DEATH_CHECK								= ATTRIBUTES_PREFIX + BonusAttributeType.DEATH_CHECK.name();
+	/** The field ID for reaction modifier changes. */
+	public static final String					ID_REACTION_MODIFIER							= ATTRIBUTES_PREFIX + BonusAttributeType.REACTION_MODIFIER.name();
 	/** The field ID for basic speed changes. */
 	public static final String					ID_BASIC_SPEED							= ATTRIBUTES_PREFIX + BonusAttributeType.SPEED.name();
 	/** The field ID for basic move changes. */
@@ -217,6 +215,8 @@ public class GURPSCharacter extends DataFile {
 	public static final String					ID_TOTAL_POINTS							= POINT_SUMMARY_PREFIX + "TotalPoints";						//$NON-NLS-1$
 	/** The field ID for attribute point summary changes. */
 	public static final String					ID_ATTRIBUTE_POINTS						= POINT_SUMMARY_PREFIX + "AttributePoints";					//$NON-NLS-1$
+	/** The field ID for attribute point summary changes. */
+	public static final String					ID_NEGATIVE_ATTRIBUTE_POINTS						= POINT_SUMMARY_PREFIX + "NegativeAttributePoints";					//$NON-NLS-1$
 	/** The field ID for advantage point summary changes. */
 	public static final String					ID_ADVANTAGE_POINTS						= POINT_SUMMARY_PREFIX + "AdvantagePoints";					//$NON-NLS-1$
 	/** The field ID for disadvantage point summary changes. */
@@ -266,7 +266,9 @@ public class GURPSCharacter extends DataFile {
 	/** The field ID for unconscious check fatigue point changes. */
 	public static final String					ID_UNCONSCIOUS_CHECKS_FATIGUE_POINTS	= FATIGUE_POINTS_PREFIX + "UnconsciousChecks";					//$NON-NLS-1$
 	/** The field ID for unconscious fatigue point changes. */
-	public static final String					ID_UNCONSCIOUS_FATIGUE_POINTS			= FATIGUE_POINTS_PREFIX + "Unconscious";						//$NON-NLS-1$
+	public static final String					ID_UNCONSCIOUS_FATIGUE_POINTS			= FATIGUE_POINTS_PREFIX + "Unconscious";						
+	/** The category for attributes. */
+	public static final String					CAT_ATTRIBUTE			= "Attribute";						//$NON-NLS-1$
 	private long								mLastModified;
 	private long								mCreatedOn;
 	private HashMap<String, ArrayList<Feature>>	mFeatureMap;
@@ -289,6 +291,7 @@ public class GURPSCharacter extends DataFile {
 	private int									mFrightCheckBonus;
 	private int									mConsciousCheckBonus;
 	private int									mDeathCheckBonus;
+	private int									mReactionModifier;
 	private int									mPerception;
 	private int									mPerceptionBonus;
 	private int									mVisionBonus;
@@ -324,6 +327,7 @@ public class GURPSCharacter extends DataFile {
 	private WeightValue							mCachedWeightCarried;
 	private double								mCachedWealthCarried;
 	private int									mCachedAttributePoints;
+	private int									mCachedNegativeAttributePoints;
 	private int									mCachedAdvantagePoints;
 	private int									mCachedDisadvantagePoints;
 	private int									mCachedQuirkPoints;
@@ -336,7 +340,6 @@ public class GURPSCharacter extends DataFile {
 	private boolean								mIncludePunch;
 	private boolean								mIncludeKick;
 	private boolean								mIncludeKickBoots;
-	private boolean								mIncludeDeathCheckRolls;
 
 	/** Creates a new character with only default values set. */
 	public GURPSCharacter() {
@@ -375,7 +378,6 @@ public class GURPSCharacter extends DataFile {
 		mIncludePunch = true;
 		mIncludeKick = true;
 		mIncludeKickBoots = true;
-		mIncludeDeathCheckRolls = false;
 		mCachedWeightCarried = new WeightValue(0, SheetPreferences.getWeightUnits());
 		try {
 			mPageSettings = new PrintManager(PageOrientation.PORTRAIT, 0.5, LengthUnits.IN);
@@ -459,8 +461,6 @@ public class GURPSCharacter extends DataFile {
 					mIncludeKick = reader.readBoolean();
 				} else if (TAG_INCLUDE_BOOTS.equals(name)) {
 					mIncludeKickBoots = reader.readBoolean();
-				} else if (TAG_INCLUDE_DEATH_CHECK_ROLLS.equals(name)) {
-					mIncludeDeathCheckRolls = reader.readBoolean();
 				} else if (AdvantageList.TAG_ROOT.equals(name)) {
 					loadAdvantageList(reader, state);
 				} else if (SkillList.TAG_ROOT.equals(name)) {
@@ -544,7 +544,7 @@ public class GURPSCharacter extends DataFile {
 		} while (reader.withinMarker(marker));
 	}
 
-	private void calculateAll() {
+	public void calculateAll() {
 		calculateAttributePoints();
 		calculateAdvantagePoints();
 		calculateSkillPoints();
@@ -583,7 +583,6 @@ public class GURPSCharacter extends DataFile {
 		out.simpleTag(TAG_INCLUDE_PUNCH, mIncludePunch);
 		out.simpleTag(TAG_INCLUDE_KICK, mIncludeKick);
 		out.simpleTag(TAG_INCLUDE_BOOTS, mIncludeKickBoots);
-		out.simpleTag(TAG_INCLUDE_DEATH_CHECK_ROLLS, mIncludeDeathCheckRolls);
 
 		saveList(AdvantageList.TAG_ROOT, mAdvantages, out);
 		saveList(SkillList.TAG_ROOT, mSkills, out);
@@ -673,8 +672,12 @@ public class GURPSCharacter extends DataFile {
 			return new Integer(getConsciousCheck());
 		} else if (ID_DEATH_CHECK.equals(id)) {
 			return new Integer(getDeathCheck());
+		} else if (ID_REACTION_MODIFIER.equals(id)) {
+			return new Integer(getReactionModifier());
 		} else if (ID_ATTRIBUTE_POINTS.equals(id)) {
 			return new Integer(getAttributePoints());
+		} else if (ID_NEGATIVE_ATTRIBUTE_POINTS.equals(id)) {
+			return new Integer(getNegativeAttributePoints());
 		} else if (ID_ADVANTAGE_POINTS.equals(id)) {
 			return new Integer(getAdvantagePoints());
 		} else if (ID_DISADVANTAGE_POINTS.equals(id)) {
@@ -847,6 +850,7 @@ public class GURPSCharacter extends DataFile {
 		if (mNeedAttributePointCalculation) {
 			calculateAttributePoints();
 			notify(ID_ATTRIBUTE_POINTS, new Integer(getAttributePoints()));
+			notify(ID_NEGATIVE_ATTRIBUTE_POINTS, new Integer(getNegativeAttributePoints()));
 		}
 		if (mNeedAdvantagesPointCalculation) {
 			calculateAdvantagePoints();
@@ -1031,7 +1035,12 @@ public class GURPSCharacter extends DataFile {
 		}
 
 		updateSkills();
-		mNeedAttributePointCalculation = true;
+		if (SheetPreferences.getAttributeModes() != AttributeModes.DISADV_C) {
+			mNeedAttributePointCalculation = true;
+		}
+		if (SheetPreferences.getAttributeModes() == AttributeModes.DISADV || SheetPreferences.getAttributeModes() == AttributeModes.DISADV_C) {
+			mNeedAdvantagesPointCalculation = true;
+		}
 		endNotify();
 	}
 
@@ -1226,7 +1235,12 @@ public class GURPSCharacter extends DataFile {
 			notify(ID_BASIC_MOVE, new Integer(tmp));
 		}
 		notifyIfMoveOrDodgeAltered(data);
-		mNeedAttributePointCalculation = true;
+		if (SheetPreferences.getAttributeModes() != AttributeModes.DISADV_C) {
+			mNeedAttributePointCalculation = true;
+		}
+		if (SheetPreferences.getAttributeModes() == AttributeModes.DISADV || SheetPreferences.getAttributeModes() == AttributeModes.DISADV_C) {
+			mNeedAdvantagesPointCalculation = true;
+		}
 		endNotify();
 	}
 
@@ -1282,7 +1296,12 @@ public class GURPSCharacter extends DataFile {
 		mMoveBonus = bonus;
 		notify(ID_BASIC_MOVE, new Integer(getBasicMove()));
 		notifyIfMoveOrDodgeAltered(data);
-		mNeedAttributePointCalculation = true;
+		if (SheetPreferences.getAttributeModes() != AttributeModes.DISADV_C) {
+			mNeedAttributePointCalculation = true;
+		}
+		if (SheetPreferences.getAttributeModes() == AttributeModes.DISADV || SheetPreferences.getAttributeModes() == AttributeModes.DISADV_C) {
+			mNeedAdvantagesPointCalculation = true;
+		}
 		endNotify();
 	}
 
@@ -1495,7 +1514,12 @@ public class GURPSCharacter extends DataFile {
 		}
 		notifyIfMoveOrDodgeAltered(data);
 		updateSkills();
-		mNeedAttributePointCalculation = true;
+		if (SheetPreferences.getAttributeModes() != AttributeModes.DISADV_C) {
+			mNeedAttributePointCalculation = true;
+		}
+		if (SheetPreferences.getAttributeModes() == AttributeModes.DISADV || SheetPreferences.getAttributeModes() == AttributeModes.DISADV_C) {
+			mNeedAdvantagesPointCalculation = true;
+		}
 		endNotify();
 	}
 
@@ -1568,7 +1592,12 @@ public class GURPSCharacter extends DataFile {
 		}
 		updateSkills();
 		updateSpells();
-		mNeedAttributePointCalculation = true;
+		if (SheetPreferences.getAttributeModes() != AttributeModes.DISADV_C) {
+			mNeedAttributePointCalculation = true;
+		}
+		if (SheetPreferences.getAttributeModes() == AttributeModes.DISADV || SheetPreferences.getAttributeModes() == AttributeModes.DISADV_C) {
+			mNeedAdvantagesPointCalculation = true;
+		}
 		endNotify();
 	}
 
@@ -1628,6 +1657,8 @@ public class GURPSCharacter extends DataFile {
 
 		startNotify();
 		notify(ID_HEALTH, new Integer(getHealth()));
+		notify(ID_CONSCIOUS_CHECK, new Integer(getConsciousCheck()));
+		notify(ID_DEATH_CHECK, new Integer(getDeathCheck()));
 
 		newSpeed = getBasicSpeed();
 		if (newSpeed != speed) {
@@ -1641,7 +1672,12 @@ public class GURPSCharacter extends DataFile {
 		notifyIfMoveOrDodgeAltered(data);
 		notifyOfBaseFatiguePointChange();
 		updateSkills();
-		mNeedAttributePointCalculation = true;
+		if (SheetPreferences.getAttributeModes() != AttributeModes.DISADV_C) {
+			mNeedAttributePointCalculation = true;
+		}
+		if (SheetPreferences.getAttributeModes() == AttributeModes.DISADV || SheetPreferences.getAttributeModes() == AttributeModes.DISADV_C) {
+			mNeedAdvantagesPointCalculation = true;
+		}
 		endNotify();
 	}
 
@@ -1657,7 +1693,7 @@ public class GURPSCharacter extends DataFile {
 
 	/** @return The total number of points spent. */
 	public int getSpentPoints() {
-		return getAttributePoints() + getAdvantagePoints() + getDisadvantagePoints() + getQuirkPoints() + getSkillPoints() + getSpellPoints() + getRacePoints();
+		return getAttributePoints() + getNegativeAttributePoints() + getAdvantagePoints() + getDisadvantagePoints() + getQuirkPoints() + getSkillPoints() + getSpellPoints() + getRacePoints();
 	}
 
 	/** @return The number of earned points. */
@@ -1685,13 +1721,51 @@ public class GURPSCharacter extends DataFile {
 		}
 	}
 
-	/** @return The number of points spent on basic attributes. */
+	/** @return The number of points spent on basic attributes, depending on SheetPreferences.getAttributeModes(). */
 	public int getAttributePoints() {
 		return mCachedAttributePoints;
 	}
+	
+	/** @return The number of points spent on negative basic attributes, depending on SheetPreferences.getAttributeModes(). */
+	public int getNegativeAttributePoints() {
+		return mCachedNegativeAttributePoints;
+	}
 
 	private void calculateAttributePoints() {
-		mCachedAttributePoints = getStrengthPoints() + getDexterityPoints() + getIntelligencePoints() + getHealthPoints() + getWillPoints() + getPerceptionPoints() + getBasicSpeedPoints() + getBasicMovePoints() + getHitPointPoints() + getFatiguePointPoints();
+		int[] points;
+		if (SheetPreferences.getAttributeModes() == AttributeModes.CLASSIC) {
+			mCachedAttributePoints = getStrengthPoints() + getDexterityPoints() + getIntelligencePoints() + getHealthPoints() + getWillPoints() + getPerceptionPoints() + getBasicSpeedPoints() + getBasicMovePoints() + getHitPointPoints() + getFatiguePointPoints();
+			mCachedNegativeAttributePoints = 0;
+		} else if (SheetPreferences.getAttributeModes() == AttributeModes.NEG_ATTR || SheetPreferences.getAttributeModes() == AttributeModes.NEG_ATTR_C || SheetPreferences.getAttributeModes() == AttributeModes.DISADV) {
+			mCachedAttributePoints = 0;
+			mCachedNegativeAttributePoints = 0;
+			points = new int[10];
+			points[0] = getStrengthPoints();
+			points[1] = getDexterityPoints();
+			points[2] = getIntelligencePoints();
+			points[3] = getHealthPoints();
+			points[4] = getWillPoints();
+			points[5] = getPerceptionPoints();
+			points[6] = getBasicSpeedPoints();
+			points[7] = getBasicMovePoints();
+			points[8] = getHitPointPoints();
+			points[9] = getFatiguePointPoints();
+			for (int i = 0; i < points.length; i++) {
+				if (points[i] >= 0) {
+					mCachedAttributePoints += points[i];
+				} else if (SheetPreferences.getAttributeModes() != AttributeModes.DISADV) {
+					mCachedNegativeAttributePoints += points[i];
+				}
+			}
+			if (SheetPreferences.getAttributeModes() == AttributeModes.NEG_ATTR_C) {
+				for (Advantage advantage : new FilteredIterator<>(mAdvantages.getTopLevelRows(), Advantage.class)) {
+					calculateSingleAdvantagePointsForAttribute(advantage);
+				}
+			}
+		} else {
+			mCachedAttributePoints = 0;
+			mCachedNegativeAttributePoints = 0;
+		}
 	}
 
 	/** @return The number of points spent on a racial package. */
@@ -1719,14 +1793,39 @@ public class GURPSCharacter extends DataFile {
 		mCachedDisadvantagePoints = 0;
 		mCachedRacePoints = 0;
 		mCachedQuirkPoints = 0;
-
+		int[] points;
+		if (SheetPreferences.getAttributeModes() == AttributeModes.DISADV || SheetPreferences.getAttributeModes() == AttributeModes.DISADV_C) {
+			points = new int[10];
+			points[0] = getStrengthPoints();
+			points[1] = getDexterityPoints();
+			points[2] = getIntelligencePoints();
+			points[3] = getHealthPoints();
+			points[4] = getWillPoints();
+			points[5] = getPerceptionPoints();
+			points[6] = getBasicSpeedPoints();
+			points[7] = getBasicMovePoints();
+			points[8] = getHitPointPoints();
+			points[9] = getFatiguePointPoints();
+			for (int i = 0; i < points.length; i++) {
+				if (points[i] < 0) {
+					mCachedDisadvantagePoints += points[i];
+				} else if (SheetPreferences.getAttributeModes() == AttributeModes.DISADV_C) {
+					mCachedAdvantagePoints += points[i];
+				}
+			}
+		}
 		for (Advantage advantage : new FilteredIterator<>(mAdvantages.getTopLevelRows(), Advantage.class)) {
 			calculateSingleAdvantagePoints(advantage);
 		}
 	}
 
+	/** Calculates the advantage points given by advantages. 
+	 @param advantage The advantage to calculate the points of.
+	 */
 	private void calculateSingleAdvantagePoints(Advantage advantage) {
-		if (advantage.canHaveChildren()) {
+		if (SheetPreferences.getAttributeModes() == AttributeModes.NEG_ATTR_C && advantage.hasCategory(CAT_ATTRIBUTE)) {
+			return;
+		}if (advantage.canHaveChildren()) {
 			AdvantageContainerType type = advantage.getContainerType();
 			if (type == AdvantageContainerType.GROUP) {
 				for (Advantage child : new FilteredIterator<>(advantage.getChildren(), Advantage.class)) {
@@ -1746,6 +1845,35 @@ public class GURPSCharacter extends DataFile {
 			mCachedDisadvantagePoints += pts;
 		} else if (pts == -1) {
 			mCachedQuirkPoints--;
+		}
+	}
+
+	/** Calculates the attribute points given by attribute advantages. 
+	 Call only when SheetPreferences.getAttributeModes() is ATTR_NEG_C!
+	 @param advantage The advantage to calculate the points of.
+	 */
+	private void calculateSingleAdvantagePointsForAttribute(Advantage advantage) {
+		if (!advantage.hasCategory(CAT_ATTRIBUTE)) {
+			return;
+		}
+		if (advantage.canHaveChildren()) {
+			AdvantageContainerType type = advantage.getContainerType();
+			if (type == AdvantageContainerType.GROUP) {
+				for (Advantage child : new FilteredIterator<>(advantage.getChildren(), Advantage.class)) {
+					calculateSingleAdvantagePointsForAttribute(child);
+				}
+				return;
+			} else if (type == AdvantageContainerType.RACE) {
+				mCachedRacePoints = advantage.getAdjustedPoints();
+				return;
+			}
+		}
+
+		int pts = advantage.getAdjustedPoints();
+		if (pts >= 0) {
+			mCachedAttributePoints += pts;
+		} else {
+			mCachedNegativeAttributePoints += pts;
 		}
 	}
 
@@ -1819,20 +1947,6 @@ public class GURPSCharacter extends DataFile {
 		}
 	}
 
-	/** @return Whether to include the kick w/boots natural weapon or not. */
-	public boolean includeDeathCheckRolls() {
-		return mIncludeDeathCheckRolls;
-	}
-
-	/** @param include Whether to include the kick w/boots natural weapon or not. */
-	public void setIncludeDeathCheckRolls(boolean include) {
-		if (mIncludeDeathCheckRolls != include) {
-			postUndoEdit(INCLUDE_DEATH_CHECK_ROLLS_UNDO, ID_INCLUDE_DEATH_CHECK_ROLLSS, new Boolean(mIncludeDeathCheckRolls), new Boolean(include));
-			mIncludeDeathCheckRolls = include;
-			notifySingle(ID_INCLUDE_DEATH_CHECK_ROLLSS, new Boolean(mIncludeDeathCheckRolls));
-		}
-	}
-
 	/** @return The hit points (HP). */
 	public int getHitPoints() {
 		return getStrength() + mHitPoints + mHitPointBonus;
@@ -1850,7 +1964,12 @@ public class GURPSCharacter extends DataFile {
 			postUndoEdit(HIT_POINTS_UNDO, ID_HIT_POINTS, new Integer(oldHP), new Integer(hp));
 			startNotify();
 			mHitPoints = hp - (getStrength() + mHitPointBonus);
-			mNeedAttributePointCalculation = true;
+			if (SheetPreferences.getAttributeModes() != AttributeModes.DISADV_C) {
+				mNeedAttributePointCalculation = true;
+			}
+			if (SheetPreferences.getAttributeModes() == AttributeModes.DISADV || SheetPreferences.getAttributeModes() == AttributeModes.DISADV_C) {
+				mNeedAdvantagesPointCalculation = true;
+			}
 			notifyOfBaseHitPointChange();
 			endNotify();
 		}
@@ -1902,6 +2021,7 @@ public class GURPSCharacter extends DataFile {
 		notify(ID_DEATH_CHECK_4_HIT_POINTS, new Integer(getDeathCheck4HitPoints()));
 		notify(ID_DEAD_HIT_POINTS, new Integer(getDeadHitPoints()));
 		notify(ID_REELING_HIT_POINTS, new Integer(getReelingHitPoints()));
+		notify(ID_CONSCIOUS_CHECK, new Integer(getConsciousCheck()));
 		endNotify();
 	}
 
@@ -1920,6 +2040,7 @@ public class GURPSCharacter extends DataFile {
 			postUndoEdit(CURRENT_HIT_POINTS_UNDO, ID_CURRENT_HIT_POINTS, mCurrentHitPoints, hp);
 			mCurrentHitPoints = hp;
 			notifySingle(ID_CURRENT_HIT_POINTS, mCurrentHitPoints);
+			notify(ID_CONSCIOUS_CHECK, new Integer(getConsciousCheck()));
 		}
 	}
 
@@ -1995,7 +2116,12 @@ public class GURPSCharacter extends DataFile {
 		notify(ID_WILL, new Integer(getWill()));
 		notify(ID_FRIGHT_CHECK, new Integer(getFrightCheck()));
 		updateSkills();
-		mNeedAttributePointCalculation = true;
+		if (SheetPreferences.getAttributeModes() != AttributeModes.DISADV_C) {
+			mNeedAttributePointCalculation = true;
+		}
+		if (SheetPreferences.getAttributeModes() == AttributeModes.DISADV || SheetPreferences.getAttributeModes() == AttributeModes.DISADV_C) {
+			mNeedAdvantagesPointCalculation = true;
+		}
 		endNotify();
 	}
 
@@ -2032,7 +2158,14 @@ public class GURPSCharacter extends DataFile {
 
 	/** @return The conscious check. */
 	public int getConsciousCheck() {
-		return getHealthPoints() + mConsciousCheckBonus;
+		double hp;
+		try {
+			hp = Double.parseDouble(getCurrentHitPoints());
+		}
+		catch (NumberFormatException ex) {
+			hp = 0d;
+		}
+		return getHealth() + mConsciousCheckBonus + (hp < 0d ? (int) Math.ceil(hp / getHitPoints()) : 0);
 	}
 
 	/** @return The conscious check bonus. */
@@ -2052,7 +2185,7 @@ public class GURPSCharacter extends DataFile {
 
 	/** @return The death check. */
 	public int getDeathCheck() {
-		return getHealthPoints() + mDeathCheckBonus;
+		return getHealth() + mDeathCheckBonus;
 	}
 
 	/** @return The death check bonus. */
@@ -2060,12 +2193,27 @@ public class GURPSCharacter extends DataFile {
 		return mDeathCheckBonus;
 	}
 
-	/** @param bonus The new fright check bonus. */
+	/** @param bonus The new death check bonus. */
 	public void setDeathCheckBonus(int bonus) {
 		if (mDeathCheckBonus != bonus) {
 			mDeathCheckBonus = bonus;
 			startNotify();
 			notify(ID_DEATH_CHECK, new Integer(getDeathCheck()));
+			endNotify();
+		}
+	}
+
+	/** @return The reaction modifier. */
+	public int getReactionModifier() {
+		return mReactionModifier;
+	}
+
+	/** @param bonus The new reaction modifier. */
+	public void setReactionModifier(int modifier) {
+		if (mReactionModifier != modifier) {
+			mReactionModifier = modifier;
+			startNotify();
+			notify(ID_REACTION_MODIFIER, new Integer(getReactionModifier()));
 			endNotify();
 		}
 	}
@@ -2191,7 +2339,12 @@ public class GURPSCharacter extends DataFile {
 		notify(ID_TASTE_AND_SMELL, new Integer(getTasteAndSmell()));
 		notify(ID_TOUCH, new Integer(getTouch()));
 		updateSkills();
-		mNeedAttributePointCalculation = true;
+		if (SheetPreferences.getAttributeModes() != AttributeModes.DISADV_C) {
+			mNeedAttributePointCalculation = true;
+		}
+		if (SheetPreferences.getAttributeModes() == AttributeModes.DISADV || SheetPreferences.getAttributeModes() == AttributeModes.DISADV_C) {
+			mNeedAdvantagesPointCalculation = true;
+		}
 		endNotify();
 	}
 
@@ -2217,7 +2370,12 @@ public class GURPSCharacter extends DataFile {
 			postUndoEdit(FATIGUE_POINTS_UNDO, ID_FATIGUE_POINTS, new Integer(oldFP), new Integer(fp));
 			startNotify();
 			mFatiguePoints = fp - (getHealth() + mFatiguePointBonus);
-			mNeedAttributePointCalculation = true;
+			if (SheetPreferences.getAttributeModes() != AttributeModes.DISADV_C) {
+				mNeedAttributePointCalculation = true;
+			}
+			if (SheetPreferences.getAttributeModes() == AttributeModes.DISADV || SheetPreferences.getAttributeModes() == AttributeModes.DISADV_C) {
+				mNeedAdvantagesPointCalculation = true;
+			}
 			notifyOfBaseFatiguePointChange();
 			endNotify();
 		}
@@ -2433,6 +2591,9 @@ public class GURPSCharacter extends DataFile {
 		setHealthCostReduction(getCostReductionFor(ID_HEALTH));
 		setWillBonus(getIntegerBonusFor(ID_WILL));
 		setFrightCheckBonus(getIntegerBonusFor(ID_FRIGHT_CHECK));
+		setConsciousCheckBonus(getIntegerBonusFor(ID_CONSCIOUS_CHECK));
+		setDeathCheckBonus(getIntegerBonusFor(ID_DEATH_CHECK));
+		setReactionModifier(getIntegerBonusFor(ID_REACTION_MODIFIER));
 		setPerceptionBonus(getIntegerBonusFor(ID_PERCEPTION));
 		setVisionBonus(getIntegerBonusFor(ID_VISION));
 		setHearingBonus(getIntegerBonusFor(ID_HEARING));
