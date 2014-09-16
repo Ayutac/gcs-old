@@ -495,6 +495,31 @@ public abstract class ListRow extends Row {
 	public Set<String> getCategories() {
 		return Collections.unmodifiableSet(mCategories);
 	}
+	
+	/** @param category The category to search for.
+	 @return If the catogories contain the given one. */
+	public boolean hasCategory(String category) {
+		return hasCategory(category, false);
+	}
+	
+	/** @param category The category to search for.
+	 @param ignoreCase If the case should be ignored.
+	 @return If the catogories contain the given one. */
+	public boolean hasCategory(String category, boolean ignoreCase) {
+		if (category == null) {
+			return mCategories.contains(null);
+		}
+		if (ignoreCase) {
+			for (String cat : mCategories) {
+				if (cat.toLowerCase().equals(category.toLowerCase())) {
+					return true;
+				}
+			}
+		} else {
+			return mCategories.contains(category);
+		}
+		return false;
+	}
 
 	/** @return The categories this data row belongs to. */
 	public String getCategoriesAsString() {

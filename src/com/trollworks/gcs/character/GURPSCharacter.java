@@ -29,6 +29,7 @@ import com.trollworks.gcs.feature.SpellBonus;
 import com.trollworks.gcs.feature.WeaponBonus;
 import com.trollworks.gcs.modifier.Modifier;
 import com.trollworks.gcs.preferences.SheetPreferences;
+import com.trollworks.gcs.preferences.AttributeModes;
 import com.trollworks.gcs.skill.Skill;
 import com.trollworks.gcs.skill.SkillList;
 import com.trollworks.gcs.skill.Technique;
@@ -170,7 +171,7 @@ public class GURPSCharacter extends DataFile {
 	/** The field ID for conscious check changes. */
 	public static final String					ID_CONSCIOUS_CHECK							= ATTRIBUTES_PREFIX + BonusAttributeType.CONSCIOUS_CHECK.name();
 	/** The field ID for death check changes. */
-	public static final String					ID_DEATH_CHECK								= ATTRIBUTES_PREFIX + BonusAttributeType.WILL.name();
+	public static final String					ID_DEATH_CHECK								= ATTRIBUTES_PREFIX + BonusAttributeType.DEATH_CHECK.name();
 	/** The field ID for reaction modifier changes. */
 	public static final String					ID_REACTION_MODIFIER							= ATTRIBUTES_PREFIX + BonusAttributeType.REACTION_MODIFIER.name();
 	/** The field ID for basic speed changes. */
@@ -214,6 +215,8 @@ public class GURPSCharacter extends DataFile {
 	public static final String					ID_TOTAL_POINTS							= POINT_SUMMARY_PREFIX + "TotalPoints";						//$NON-NLS-1$
 	/** The field ID for attribute point summary changes. */
 	public static final String					ID_ATTRIBUTE_POINTS						= POINT_SUMMARY_PREFIX + "AttributePoints";					//$NON-NLS-1$
+	/** The field ID for attribute point summary changes. */
+	public static final String					ID_NEGATIVE_ATTRIBUTE_POINTS						= POINT_SUMMARY_PREFIX + "NegativeAttributePoints";					//$NON-NLS-1$
 	/** The field ID for advantage point summary changes. */
 	public static final String					ID_ADVANTAGE_POINTS						= POINT_SUMMARY_PREFIX + "AdvantagePoints";					//$NON-NLS-1$
 	/** The field ID for disadvantage point summary changes. */
@@ -263,7 +266,9 @@ public class GURPSCharacter extends DataFile {
 	/** The field ID for unconscious check fatigue point changes. */
 	public static final String					ID_UNCONSCIOUS_CHECKS_FATIGUE_POINTS	= FATIGUE_POINTS_PREFIX + "UnconsciousChecks";					//$NON-NLS-1$
 	/** The field ID for unconscious fatigue point changes. */
-	public static final String					ID_UNCONSCIOUS_FATIGUE_POINTS			= FATIGUE_POINTS_PREFIX + "Unconscious";						//$NON-NLS-1$
+	public static final String					ID_UNCONSCIOUS_FATIGUE_POINTS			= FATIGUE_POINTS_PREFIX + "Unconscious";						
+	/** The category for attributes. */
+	public static final String					CAT_ATTRIBUTE			= "Attribute";						//$NON-NLS-1$
 	private long								mLastModified;
 	private long								mCreatedOn;
 	private HashMap<String, ArrayList<Feature>>	mFeatureMap;
@@ -322,6 +327,7 @@ public class GURPSCharacter extends DataFile {
 	private WeightValue							mCachedWeightCarried;
 	private double								mCachedWealthCarried;
 	private int									mCachedAttributePoints;
+	private int									mCachedNegativeAttributePoints;
 	private int									mCachedAdvantagePoints;
 	private int									mCachedDisadvantagePoints;
 	private int									mCachedQuirkPoints;
@@ -538,7 +544,7 @@ public class GURPSCharacter extends DataFile {
 		} while (reader.withinMarker(marker));
 	}
 
-	private void calculateAll() {
+	public void calculateAll() {
 		calculateAttributePoints();
 		calculateAdvantagePoints();
 		calculateSkillPoints();
@@ -670,6 +676,8 @@ public class GURPSCharacter extends DataFile {
 			return new Integer(getReactionModifier());
 		} else if (ID_ATTRIBUTE_POINTS.equals(id)) {
 			return new Integer(getAttributePoints());
+		} else if (ID_NEGATIVE_ATTRIBUTE_POINTS.equals(id)) {
+			return new Integer(getNegativeAttributePoints());
 		} else if (ID_ADVANTAGE_POINTS.equals(id)) {
 			return new Integer(getAdvantagePoints());
 		} else if (ID_DISADVANTAGE_POINTS.equals(id)) {
@@ -842,6 +850,7 @@ public class GURPSCharacter extends DataFile {
 		if (mNeedAttributePointCalculation) {
 			calculateAttributePoints();
 			notify(ID_ATTRIBUTE_POINTS, new Integer(getAttributePoints()));
+			notify(ID_NEGATIVE_ATTRIBUTE_POINTS, new Integer(getNegativeAttributePoints()));
 		}
 		if (mNeedAdvantagesPointCalculation) {
 			calculateAdvantagePoints();
@@ -1026,7 +1035,12 @@ public class GURPSCharacter extends DataFile {
 		}
 
 		updateSkills();
-		mNeedAttributePointCalculation = true;
+		if (SheetPreferences.getAttributeModes() != AttributeModes.DISADV_C) {
+			mNeedAttributePointCalculation = true;
+		}
+		if (SheetPreferences.getAttributeModes() == AttributeModes.DISADV || SheetPreferences.getAttributeModes() == AttributeModes.DISADV_C) {
+			mNeedAdvantagesPointCalculation = true;
+		}
 		endNotify();
 	}
 
@@ -1221,7 +1235,12 @@ public class GURPSCharacter extends DataFile {
 			notify(ID_BASIC_MOVE, new Integer(tmp));
 		}
 		notifyIfMoveOrDodgeAltered(data);
-		mNeedAttributePointCalculation = true;
+		if (SheetPreferences.getAttributeModes() != AttributeModes.DISADV_C) {
+			mNeedAttributePointCalculation = true;
+		}
+		if (SheetPreferences.getAttributeModes() == AttributeModes.DISADV || SheetPreferences.getAttributeModes() == AttributeModes.DISADV_C) {
+			mNeedAdvantagesPointCalculation = true;
+		}
 		endNotify();
 	}
 
@@ -1277,7 +1296,12 @@ public class GURPSCharacter extends DataFile {
 		mMoveBonus = bonus;
 		notify(ID_BASIC_MOVE, new Integer(getBasicMove()));
 		notifyIfMoveOrDodgeAltered(data);
-		mNeedAttributePointCalculation = true;
+		if (SheetPreferences.getAttributeModes() != AttributeModes.DISADV_C) {
+			mNeedAttributePointCalculation = true;
+		}
+		if (SheetPreferences.getAttributeModes() == AttributeModes.DISADV || SheetPreferences.getAttributeModes() == AttributeModes.DISADV_C) {
+			mNeedAdvantagesPointCalculation = true;
+		}
 		endNotify();
 	}
 
@@ -1490,7 +1514,12 @@ public class GURPSCharacter extends DataFile {
 		}
 		notifyIfMoveOrDodgeAltered(data);
 		updateSkills();
-		mNeedAttributePointCalculation = true;
+		if (SheetPreferences.getAttributeModes() != AttributeModes.DISADV_C) {
+			mNeedAttributePointCalculation = true;
+		}
+		if (SheetPreferences.getAttributeModes() == AttributeModes.DISADV || SheetPreferences.getAttributeModes() == AttributeModes.DISADV_C) {
+			mNeedAdvantagesPointCalculation = true;
+		}
 		endNotify();
 	}
 
@@ -1563,7 +1592,12 @@ public class GURPSCharacter extends DataFile {
 		}
 		updateSkills();
 		updateSpells();
-		mNeedAttributePointCalculation = true;
+		if (SheetPreferences.getAttributeModes() != AttributeModes.DISADV_C) {
+			mNeedAttributePointCalculation = true;
+		}
+		if (SheetPreferences.getAttributeModes() == AttributeModes.DISADV || SheetPreferences.getAttributeModes() == AttributeModes.DISADV_C) {
+			mNeedAdvantagesPointCalculation = true;
+		}
 		endNotify();
 	}
 
@@ -1638,7 +1672,12 @@ public class GURPSCharacter extends DataFile {
 		notifyIfMoveOrDodgeAltered(data);
 		notifyOfBaseFatiguePointChange();
 		updateSkills();
-		mNeedAttributePointCalculation = true;
+		if (SheetPreferences.getAttributeModes() != AttributeModes.DISADV_C) {
+			mNeedAttributePointCalculation = true;
+		}
+		if (SheetPreferences.getAttributeModes() == AttributeModes.DISADV || SheetPreferences.getAttributeModes() == AttributeModes.DISADV_C) {
+			mNeedAdvantagesPointCalculation = true;
+		}
 		endNotify();
 	}
 
@@ -1654,7 +1693,7 @@ public class GURPSCharacter extends DataFile {
 
 	/** @return The total number of points spent. */
 	public int getSpentPoints() {
-		return getAttributePoints() + getAdvantagePoints() + getDisadvantagePoints() + getQuirkPoints() + getSkillPoints() + getSpellPoints() + getRacePoints();
+		return getAttributePoints() + getNegativeAttributePoints() + getAdvantagePoints() + getDisadvantagePoints() + getQuirkPoints() + getSkillPoints() + getSpellPoints() + getRacePoints();
 	}
 
 	/** @return The number of earned points. */
@@ -1682,13 +1721,51 @@ public class GURPSCharacter extends DataFile {
 		}
 	}
 
-	/** @return The number of points spent on basic attributes. */
+	/** @return The number of points spent on basic attributes, depending on SheetPreferences.getAttributeModes(). */
 	public int getAttributePoints() {
 		return mCachedAttributePoints;
 	}
+	
+	/** @return The number of points spent on negative basic attributes, depending on SheetPreferences.getAttributeModes(). */
+	public int getNegativeAttributePoints() {
+		return mCachedNegativeAttributePoints;
+	}
 
 	private void calculateAttributePoints() {
-		mCachedAttributePoints = getStrengthPoints() + getDexterityPoints() + getIntelligencePoints() + getHealthPoints() + getWillPoints() + getPerceptionPoints() + getBasicSpeedPoints() + getBasicMovePoints() + getHitPointPoints() + getFatiguePointPoints();
+		int[] points;
+		if (SheetPreferences.getAttributeModes() == AttributeModes.CLASSIC) {
+			mCachedAttributePoints = getStrengthPoints() + getDexterityPoints() + getIntelligencePoints() + getHealthPoints() + getWillPoints() + getPerceptionPoints() + getBasicSpeedPoints() + getBasicMovePoints() + getHitPointPoints() + getFatiguePointPoints();
+			mCachedNegativeAttributePoints = 0;
+		} else if (SheetPreferences.getAttributeModes() == AttributeModes.NEG_ATTR || SheetPreferences.getAttributeModes() == AttributeModes.NEG_ATTR_C || SheetPreferences.getAttributeModes() == AttributeModes.DISADV) {
+			mCachedAttributePoints = 0;
+			mCachedNegativeAttributePoints = 0;
+			points = new int[10];
+			points[0] = getStrengthPoints();
+			points[1] = getDexterityPoints();
+			points[2] = getIntelligencePoints();
+			points[3] = getHealthPoints();
+			points[4] = getWillPoints();
+			points[5] = getPerceptionPoints();
+			points[6] = getBasicSpeedPoints();
+			points[7] = getBasicMovePoints();
+			points[8] = getHitPointPoints();
+			points[9] = getFatiguePointPoints();
+			for (int i = 0; i < points.length; i++) {
+				if (points[i] >= 0) {
+					mCachedAttributePoints += points[i];
+				} else if (SheetPreferences.getAttributeModes() != AttributeModes.DISADV) {
+					mCachedNegativeAttributePoints += points[i];
+				}
+			}
+			if (SheetPreferences.getAttributeModes() == AttributeModes.NEG_ATTR_C) {
+				for (Advantage advantage : new FilteredIterator<>(mAdvantages.getTopLevelRows(), Advantage.class)) {
+					calculateSingleAdvantagePointsForAttribute(advantage);
+				}
+			}
+		} else {
+			mCachedAttributePoints = 0;
+			mCachedNegativeAttributePoints = 0;
+		}
 	}
 
 	/** @return The number of points spent on a racial package. */
@@ -1716,14 +1793,39 @@ public class GURPSCharacter extends DataFile {
 		mCachedDisadvantagePoints = 0;
 		mCachedRacePoints = 0;
 		mCachedQuirkPoints = 0;
-
+		int[] points;
+		if (SheetPreferences.getAttributeModes() == AttributeModes.DISADV || SheetPreferences.getAttributeModes() == AttributeModes.DISADV_C) {
+			points = new int[10];
+			points[0] = getStrengthPoints();
+			points[1] = getDexterityPoints();
+			points[2] = getIntelligencePoints();
+			points[3] = getHealthPoints();
+			points[4] = getWillPoints();
+			points[5] = getPerceptionPoints();
+			points[6] = getBasicSpeedPoints();
+			points[7] = getBasicMovePoints();
+			points[8] = getHitPointPoints();
+			points[9] = getFatiguePointPoints();
+			for (int i = 0; i < points.length; i++) {
+				if (points[i] < 0) {
+					mCachedDisadvantagePoints += points[i];
+				} else if (SheetPreferences.getAttributeModes() == AttributeModes.DISADV_C) {
+					mCachedAdvantagePoints += points[i];
+				}
+			}
+		}
 		for (Advantage advantage : new FilteredIterator<>(mAdvantages.getTopLevelRows(), Advantage.class)) {
 			calculateSingleAdvantagePoints(advantage);
 		}
 	}
 
+	/** Calculates the advantage points given by advantages. 
+	 @param advantage The advantage to calculate the points of.
+	 */
 	private void calculateSingleAdvantagePoints(Advantage advantage) {
-		if (advantage.canHaveChildren()) {
+		if (SheetPreferences.getAttributeModes() == AttributeModes.NEG_ATTR_C && advantage.hasCategory(CAT_ATTRIBUTE)) {
+			return;
+		}if (advantage.canHaveChildren()) {
 			AdvantageContainerType type = advantage.getContainerType();
 			if (type == AdvantageContainerType.GROUP) {
 				for (Advantage child : new FilteredIterator<>(advantage.getChildren(), Advantage.class)) {
@@ -1743,6 +1845,35 @@ public class GURPSCharacter extends DataFile {
 			mCachedDisadvantagePoints += pts;
 		} else if (pts == -1) {
 			mCachedQuirkPoints--;
+		}
+	}
+
+	/** Calculates the attribute points given by attribute advantages. 
+	 Call only when SheetPreferences.getAttributeModes() is ATTR_NEG_C!
+	 @param advantage The advantage to calculate the points of.
+	 */
+	private void calculateSingleAdvantagePointsForAttribute(Advantage advantage) {
+		if (!advantage.hasCategory(CAT_ATTRIBUTE)) {
+			return;
+		}
+		if (advantage.canHaveChildren()) {
+			AdvantageContainerType type = advantage.getContainerType();
+			if (type == AdvantageContainerType.GROUP) {
+				for (Advantage child : new FilteredIterator<>(advantage.getChildren(), Advantage.class)) {
+					calculateSingleAdvantagePointsForAttribute(child);
+				}
+				return;
+			} else if (type == AdvantageContainerType.RACE) {
+				mCachedRacePoints = advantage.getAdjustedPoints();
+				return;
+			}
+		}
+
+		int pts = advantage.getAdjustedPoints();
+		if (pts >= 0) {
+			mCachedAttributePoints += pts;
+		} else {
+			mCachedNegativeAttributePoints += pts;
 		}
 	}
 
@@ -1833,7 +1964,12 @@ public class GURPSCharacter extends DataFile {
 			postUndoEdit(HIT_POINTS_UNDO, ID_HIT_POINTS, new Integer(oldHP), new Integer(hp));
 			startNotify();
 			mHitPoints = hp - (getStrength() + mHitPointBonus);
-			mNeedAttributePointCalculation = true;
+			if (SheetPreferences.getAttributeModes() != AttributeModes.DISADV_C) {
+				mNeedAttributePointCalculation = true;
+			}
+			if (SheetPreferences.getAttributeModes() == AttributeModes.DISADV || SheetPreferences.getAttributeModes() == AttributeModes.DISADV_C) {
+				mNeedAdvantagesPointCalculation = true;
+			}
 			notifyOfBaseHitPointChange();
 			endNotify();
 		}
@@ -1980,7 +2116,12 @@ public class GURPSCharacter extends DataFile {
 		notify(ID_WILL, new Integer(getWill()));
 		notify(ID_FRIGHT_CHECK, new Integer(getFrightCheck()));
 		updateSkills();
-		mNeedAttributePointCalculation = true;
+		if (SheetPreferences.getAttributeModes() != AttributeModes.DISADV_C) {
+			mNeedAttributePointCalculation = true;
+		}
+		if (SheetPreferences.getAttributeModes() == AttributeModes.DISADV || SheetPreferences.getAttributeModes() == AttributeModes.DISADV_C) {
+			mNeedAdvantagesPointCalculation = true;
+		}
 		endNotify();
 	}
 
@@ -2198,7 +2339,12 @@ public class GURPSCharacter extends DataFile {
 		notify(ID_TASTE_AND_SMELL, new Integer(getTasteAndSmell()));
 		notify(ID_TOUCH, new Integer(getTouch()));
 		updateSkills();
-		mNeedAttributePointCalculation = true;
+		if (SheetPreferences.getAttributeModes() != AttributeModes.DISADV_C) {
+			mNeedAttributePointCalculation = true;
+		}
+		if (SheetPreferences.getAttributeModes() == AttributeModes.DISADV || SheetPreferences.getAttributeModes() == AttributeModes.DISADV_C) {
+			mNeedAdvantagesPointCalculation = true;
+		}
 		endNotify();
 	}
 
@@ -2224,7 +2370,12 @@ public class GURPSCharacter extends DataFile {
 			postUndoEdit(FATIGUE_POINTS_UNDO, ID_FATIGUE_POINTS, new Integer(oldFP), new Integer(fp));
 			startNotify();
 			mFatiguePoints = fp - (getHealth() + mFatiguePointBonus);
-			mNeedAttributePointCalculation = true;
+			if (SheetPreferences.getAttributeModes() != AttributeModes.DISADV_C) {
+				mNeedAttributePointCalculation = true;
+			}
+			if (SheetPreferences.getAttributeModes() == AttributeModes.DISADV || SheetPreferences.getAttributeModes() == AttributeModes.DISADV_C) {
+				mNeedAdvantagesPointCalculation = true;
+			}
 			notifyOfBaseFatiguePointChange();
 			endNotify();
 		}
