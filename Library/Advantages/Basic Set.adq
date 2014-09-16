@@ -4558,20 +4558,48 @@
 		<type>Physical</type>
 		<base_points>5</base_points>
 		<reference>B55</reference>
-		<notes>+1 to all HT rolls to stay conscious, avoid death, resist disease, resist poison; recover FP at twice the normal rate (but not FP spent for spells or psi powers)</notes>
+		<notes>also +1 to all HT rolls to resist disease and poison; recover FP at twice the normal rate (but not FP spent for spells or psi powers)</notes>
 		<categories>
 			<category>Advantage</category>
 		</categories>
+		<attribute_bonus>
+			<attribute>death check</attribute>
+			<amount>1</amount>
+		</attribute_bonus>
+		<attribute_bonus>
+			<attribute>conscious check</attribute>
+			<amount>1</amount>
+		</attribute_bonus>
+		<prereq_list all="yes">
+			<advantage_prereq has="no">
+				<name compare="is">Fit, Very</name>
+				<notes compare="is anything"></notes>
+			</advantage_prereq>
+		</prereq_list>
 	</advantage>
 	<advantage version="2">
 		<name>Fit, Very</name>
 		<type>Physical</type>
 		<base_points>15</base_points>
 		<reference>B55</reference>
-		<notes>+2 to all HT rolls to stay conscious, avoid death, resist disease, resist poison; recover FP at twice the normal rate; lose FP at half the normal rate (in both cases, not FP spent for spells or psi powers)</notes>
+		<notes>also +2 to all HT rolls to resist disease and poison; recover FP at twice the normal rate; lose FP at half the normal rate (in both cases, not FP spent for spells or psi powers)</notes>
 		<categories>
 			<category>Advantage</category>
 		</categories>
+		<attribute_bonus>
+			<attribute>death check</attribute>
+			<amount>2</amount>
+		</attribute_bonus>
+		<attribute_bonus>
+			<attribute>conscious check</attribute>
+			<amount>2</amount>
+		</attribute_bonus>
+		<prereq_list all="yes">
+			<advantage_prereq has="no">
+				<name compare="is">Fit</name>
+				<notes compare="is anything"></notes>
+			</advantage_prereq>
+		</prereq_list>
 	</advantage>
 	<advantage version="2">
 		<name>Flashbacks (Crippling, 3D minutes)</name>
@@ -5140,9 +5168,14 @@
 		<levels>1</levels>
 		<points_per_level>2</points_per_level>
 		<reference>B58</reference>
+		<notes>If this is makes a fail to a success, the character becomes unconscious.</notes>
 		<categories>
 			<category>Advantage</category>
 		</categories>
+		<attribute_bonus>
+			<attribute>death check</attribute>
+			<amount per_level="yes">1</amount>
+		</attribute_bonus>
 	</advantage>
 	<advantage version="2">
 		<name>Hard to Subdue</name>
@@ -5153,6 +5186,10 @@
 		<categories>
 			<category>Advantage</category>
 		</categories>
+		<attribute_bonus>
+			<attribute>conscious check</attribute>
+			<amount per_level="yes">1</amount>
+		</attribute_bonus>
 	</advantage>
 	<advantage version="2">
 		<name>Healing</name>
