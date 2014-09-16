@@ -116,7 +116,7 @@ public class SheetPreferences extends PreferencePanel implements ActionListener,
 	private static String				AT_MOST;
 	@Localize("decimals to display")
 	private static String				DECIMALS_TO_DISPLAY;
-	@Localize("<html><body>How to display attribute points.<br><ul><li><b>Classic:</b> Classic mode, i.e. both positive and negative attributes will be displayed in Attribute.</li><li><b>Negative Attributes:</b> Negative Attributes will be displayed seperated from positive attributes.</li><li><b>Negative Attributes (complete):</b> Same as Negative Attributes, but will count in the attribute (dis)advantages to (negative) attributes instead of counting them to (dis)advantages.</li><li><b>Disadvantages:</b> Count negative attributes into disadvantages.</li><li><b>Disadvantages (complete):</b> Same as Disadvantages, but counts attributes into advantages as well.</li></ul></body></html>")
+	@Localize("<html><body>How to display attribute points.<br><ul><li><b>Classic:</b> Classic mode, i.e. both positive and negative attributes will be displayed in Attribute.</li><li><b>Negative Attributes:</b> Negative Attributes will be displayed seperated from positive attributes.</li><li><b>Negative Attributes (complete):</b> Same as Negative Attributes, but will count in the attribute<br> (dis)advantages to (negative) attributes instead of counting them to (dis)advantages.</li><li><b>Disadvantages:</b> Count negative attributes into disadvantages.</li><li><b>Disadvantages (complete):</b> Same as Disadvantages, but counts attributes into advantages as well.</li></ul></body></html>")
 	private static String				ATTRIBUTE_MODES_TOOLTIP;
 	@Localize("Attribute mode:")
 	private static String				ATTRIBUTE_MODE;
@@ -196,6 +196,7 @@ public class SheetPreferences extends PreferencePanel implements ActionListener,
 	/** Initializes the services controlled by these preferences. */
 	public static void initialize() {
 		adjustOptionalDiceRulesProperty(areOptionalDiceRulesUsed());
+		Numbers.setMaximumFractionDigits(getDecimals()-MIN_DECIMALS);
 	}
 
 	/** @return The default length units to use. */
@@ -514,8 +515,8 @@ public class SheetPreferences extends PreferencePanel implements ActionListener,
 		} else if (source == mWeightUnitsCombo) {
 			Preferences.getInstance().setValue(MODULE, WEIGHT_UNITS_KEY, Enums.toId(WeightUnits.values()[mWeightUnitsCombo.getSelectedIndex()]));
 		} else if (source == mDecimalsCombo) {
-			Preferences.getInstance().setValue(MODULE, DECIMALS_KEY, (Integer)(mDecimalsCombo.getSelectedItem()));
 			Numbers.setMaximumFractionDigits((Integer)(mDecimalsCombo.getSelectedItem()));
+			Preferences.getInstance().setValue(MODULE, DECIMALS_KEY, (Integer)(mDecimalsCombo.getSelectedItem()));
 		} else if (source == mAttributeModesCombo) {
 			Preferences.getInstance().setValue(MODULE, ATTRIBUTE_MODES_KEY, Enums.toId(AttributeModes.values()[mAttributeModesCombo.getSelectedIndex()]));
 		} else if (source == mHTMLTemplatePicker) {

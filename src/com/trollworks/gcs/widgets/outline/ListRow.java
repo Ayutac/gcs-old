@@ -22,8 +22,10 @@ import com.trollworks.gcs.feature.SkillBonus;
 import com.trollworks.gcs.feature.SpellBonus;
 import com.trollworks.gcs.feature.WeaponBonus;
 import com.trollworks.gcs.prereq.PrereqList;
+import com.trollworks.gcs.prereq.SpellPrereq;
 import com.trollworks.gcs.skill.SkillDefault;
 import com.trollworks.gcs.skill.Technique;
+import com.trollworks.gcs.spell.Spell;
 import com.trollworks.gcs.template.Template;
 import com.trollworks.toolkit.io.xml.XMLNodeType;
 import com.trollworks.toolkit.io.xml.XMLReader;
@@ -586,7 +588,7 @@ public abstract class ListRow extends Row {
 	 */
 	public boolean isMarkedWith(String tag, Spell spell, boolean deep) {
 		if (SpellPrereq.TAG_NAME.equals(tag)) {
-			if markedForSpellName.contains(spell) {
+			if (markedForSpellName.contains(spell)) {
 				return true;
 			}
 			if (deep) {
@@ -597,7 +599,7 @@ public abstract class ListRow extends Row {
 				}
 			}
 		} else if (SpellPrereq.TAG_ANY.equals(tag)) {
-			if markedForSpellAny.contains(spell) {
+			if (markedForSpellAny.contains(spell)) {
 				return true;
 			}
 			if (deep) {
@@ -608,7 +610,7 @@ public abstract class ListRow extends Row {
 				}
 			}
 		} else if (SpellPrereq.TAG_COLLEGE.equals(tag)) {
-			if markedForSpellCollege.contains(spell) {
+			if (markedForSpellCollege.contains(spell)) {
 				return true;
 			}
 			if (deep) {
@@ -619,7 +621,7 @@ public abstract class ListRow extends Row {
 				}
 			}
 		} else if (SpellPrereq.TAG_COLLEGE_COUNT.equals(tag)) {
-			if markedForSpellCollegeCount.contains(spell) {
+			if (markedForSpellCollegeCount.contains(spell)) {
 				return true;
 			}
 			if (deep) {
@@ -629,9 +631,8 @@ public abstract class ListRow extends Row {
 					}
 				}
 			}
-		} else {
-			return true;
 		}
+		return false;
 	}
 	
 	/**
@@ -641,13 +642,13 @@ public abstract class ListRow extends Row {
 	 */
 	public void addMark(String tag, Spell spell) {
 		if (SpellPrereq.TAG_NAME.equals(tag)) {
-			markedForSpellName.add(spell) 
+			markedForSpellName.add(spell); 
 		} else if (SpellPrereq.TAG_ANY.equals(tag)) {
-			markedForSpellAny.add(spell)
+			markedForSpellAny.add(spell);
 		} else if (SpellPrereq.TAG_COLLEGE.equals(tag)) {
-			markedForSpellCollege.add(spell)
+			markedForSpellCollege.add(spell);
 		} else if (SpellPrereq.TAG_COLLEGE_COUNT.equals(tag)) {
-			markedForSpellCollegeCount.add(spell)
+			markedForSpellCollegeCount.add(spell);
 		}
 	}
 	
@@ -658,13 +659,13 @@ public abstract class ListRow extends Row {
 	 */
 	public void removeMark(String tag, Spell spell) {
 		if (SpellPrereq.TAG_NAME.equals(tag)) {
-			markedForSpellName.remove(spell)
+			markedForSpellName.remove(spell);
 		} else if (SpellPrereq.TAG_ANY.equals(tag)) {
-			markedForSpellAny.remove(spell)
+			markedForSpellAny.remove(spell);
 		} else if (SpellPrereq.TAG_COLLEGE.equals(tag)) {
-			markedForSpellCollege.remove(spell)
+			markedForSpellCollege.remove(spell);
 		} else if (SpellPrereq.TAG_COLLEGE_COUNT.equals(tag)) {
-			markedForSpellCollegeCount.remove(spell)
+			markedForSpellCollegeCount.remove(spell);
 		}
 	}
 
