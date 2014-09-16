@@ -2185,7 +2185,8 @@ public class GURPSCharacter extends DataFile {
 
 	/** @return The death check. */
 	public int getDeathCheck() {
-		return getHealth() + mDeathCheckBonus;
+		int dc = getHealth() + mDeathCheckBonus;
+		return dc > 3 ? dc : 3;
 	}
 
 	/** @return The death check bonus. */
