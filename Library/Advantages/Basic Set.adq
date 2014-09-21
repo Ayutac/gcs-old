@@ -1114,6 +1114,10 @@
 		<categories>
 			<category>Disadvantage</category>
 		</categories>
+		<attribute_bonus>
+			<attribute>reaction modifier</attribute>
+			<amount>-2</amount>
+		</attribute_bonus>
 	</advantage>
 	<advantage version="2">
 		<name>Callous</name>
@@ -1293,6 +1297,10 @@
 			<specialization compare="is anything"></specialization>
 			<amount per_level="yes">1</amount>
 		</skill_bonus>
+		<attribute_bonus>
+			<attribute>reaction modifier</attribute>
+			<amount per_level="yes">1</amount>
+		</attribute_bonus>
 	</advantage>
 	<advantage version="2">
 		<name>Charitable</name>
@@ -1963,6 +1971,7 @@
 		<type>Mental</type>
 		<base_points>-10</base_points>
 		<reference>B126</reference>
+		<notes>also +4 to resist Sex Appeal</notes>
 		<categories>
 			<category>Disadvantage</category>
 		</categories>
@@ -13715,6 +13724,10 @@
 		<categories>
 			<category>Advantage</category>
 		</categories>
+		<attribute_bonus>
+			<attribute>reaction modifier</attribute>
+			<amount per_level="yes">1</amount>
+		</attribute_bonus>
 	</advantage>
 	<advantage version="2">
 		<name>Social Stigma (Criminal Record)</name>
@@ -16582,6 +16595,7 @@
 		<type>Physical</type>
 		<base_points>10</base_points>
 		<reference>B97</reference>
+		<notes>also +2 on reaction rolls to people who can hear the character</notes>
 		<categories>
 			<category>Advantage</category>
 		</categories>
