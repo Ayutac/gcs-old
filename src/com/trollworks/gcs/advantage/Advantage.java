@@ -589,7 +589,7 @@ public class Advantage extends ListRow {
 					modifiedBasePoints = modifyPoints(modifiedBasePoints, Math.max(baseLim, -80));
 					leveledPoints = modifyPoints(leveledPoints, levelEnh);
 					leveledPoints = modifyPoints(leveledPoints, Math.max(levelLim, -80));
-					basePoints += leveledPoints;
+					modifiedBasePoints += leveledPoints;
 				}
 			} else {
 				baseMod = Math.max(baseEnh + baseLim, -80);
