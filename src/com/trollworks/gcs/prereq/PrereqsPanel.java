@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -11,17 +11,17 @@
 
 package com.trollworks.gcs.prereq;
 
-import com.trollworks.toolkit.annotation.Localize;
-import com.trollworks.toolkit.utility.Localization;
-
-
 import com.trollworks.gcs.widgets.outline.ListRow;
+import com.trollworks.toolkit.annotation.Localize;
 import com.trollworks.toolkit.ui.widget.BandedPanel;
+import com.trollworks.toolkit.utility.Localization;
 
 /** Displays and edits {@link Prereq} objects. */
 public class PrereqsPanel extends BandedPanel {
 	@Localize("Prerequisites")
-	private static String PREREQUISITES;
+	@Localize(locale = "de", value = "Bedingungen")
+	@Localize(locale = "ru", value = "Требования")
+	private static String	PREREQUISITES;
 
 	static {
 		Localization.initialize();
@@ -29,7 +29,7 @@ public class PrereqsPanel extends BandedPanel {
 
 	/**
 	 * Creates a new prerequisite editor.
-	 * 
+	 *
 	 * @param row The row these prerequisites will belong to.
 	 * @param prereqs The initial prerequisites to display.
 	 */

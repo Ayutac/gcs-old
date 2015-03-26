@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -28,10 +28,16 @@ import java.awt.event.KeyEvent;
 /** Provides the "New Skill" command. */
 public class NewSkillCommand extends Command {
 	@Localize("New Skill")
+	@Localize(locale = "de", value = "Neue Fertigkeit")
+	@Localize(locale = "ru", value = "Новое умение")
 	private static String				SKILL;
 	@Localize("New Skill Container")
+	@Localize(locale = "de", value = "Neuer Fertigkeiten-Container")
+	@Localize(locale = "ru", value = "Новый контейнер умения")
 	private static String				SKILL_CONTAINER;
 	@Localize("New Technique")
+	@Localize(locale = "de", value = "Neue Technik")
+	@Localize(locale = "ru", value = "Новая техника")
 	private static String				TECHNIQUE;
 
 	static {

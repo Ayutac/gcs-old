@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -37,12 +37,16 @@ import javax.swing.text.DefaultFormatterFactory;
 /** A skill default editor panel. */
 public class SkillDefaultEditor extends EditorPanel {
 	@Localize("Add a default")
+	@Localize(locale = "de", value = "Grundwert hinzufügen")
+	@Localize(locale = "ru", value = "Добавить новую строку")
 	private static String			ADD_DEFAULT;
 	@Localize("Remove this default")
+	@Localize(locale = "de", value = "Diesen Grundwert entfernen")
+	@Localize(locale = "ru", value = "Удалить это строку")
 	private static String			REMOVE_DEFAULT;
-	@Localize("or")
-	private static String			OR;
 	@Localize("Optional Specialization")
+	@Localize(locale = "de", value = "Optionale Spezialisierung")
+	@Localize(locale = "ru", value = "Необязательная специализация")
 	private static String			SPECIALIZATION_TOOLTIP;
 
 	static {

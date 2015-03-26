@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -20,12 +20,20 @@ import javax.swing.SwingConstants;
 /** The character identity panel. */
 public class IdentityPanel extends DropPanel {
 	@Localize("Identity")
+	@Localize(locale = "de", value = "Identität")
+	@Localize(locale = "ru", value = "Личность")
 	private static String	IDENTITY;
 	@Localize("Name:")
+	@Localize(locale = "de", value = "Name:")
+	@Localize(locale = "ru", value = "Имя:")
 	private static String	NAME;
 	@Localize("Title:")
+	@Localize(locale = "de", value = "Titel:")
+	@Localize(locale = "ru", value = "Статус:")
 	private static String	TITLE;
 	@Localize("Religion:")
+	@Localize(locale = "de", value = "Religion:")
+	@Localize(locale = "ru", value = "Религия:")
 	private static String	RELIGION;
 
 	static {

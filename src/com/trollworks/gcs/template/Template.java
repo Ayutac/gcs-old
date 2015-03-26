@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -46,6 +46,8 @@ import javax.swing.undo.StateEditable;
 /** A template. */
 public class Template extends DataFile implements StateEditable {
 	@Localize("Notes Change")
+	@Localize(locale = "de", value = "Notizen ändern")
+	@Localize(locale = "ru", value = "Смена заметки")
 	private static String		NOTES_UNDO;
 
 	static {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -30,6 +30,8 @@ import java.text.MessageFormat;
 /** An equipment contained weight prerequisite. */
 public class ContainedWeightPrereq extends HasPrereq {
 	@Localize("{0}{1} a contained weight which {2}\n")
+	@Localize(locale = "de", value = "{0}{1} eine Zuladung die {2}")
+	@Localize(locale = "ru", value = "{0}{1} имеет вес равный {2}\n")
 	private static String		CONTAINED_WEIGHT;
 
 	static {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -11,10 +11,6 @@
 
 package com.trollworks.gcs.prereq;
 
-import com.trollworks.toolkit.annotation.Localize;
-import com.trollworks.toolkit.utility.Localization;
-
-
 import com.trollworks.gcs.character.GURPSCharacter;
 import com.trollworks.gcs.criteria.IntegerCriteria;
 import com.trollworks.gcs.criteria.NumericCompareType;
@@ -22,9 +18,11 @@ import com.trollworks.gcs.criteria.StringCompareType;
 import com.trollworks.gcs.criteria.StringCriteria;
 import com.trollworks.gcs.spell.Spell;
 import com.trollworks.gcs.widgets.outline.ListRow;
+import com.trollworks.toolkit.annotation.Localize;
 import com.trollworks.toolkit.io.xml.XMLNodeType;
 import com.trollworks.toolkit.io.xml.XMLReader;
 import com.trollworks.toolkit.io.xml.XMLWriter;
+import com.trollworks.toolkit.utility.Localization;
 
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -35,17 +33,29 @@ import java.util.LinkedList;
 /** A Spell prerequisite. */
 public class SpellPrereq extends HasPrereq {
 	@Localize("spell")
-	private static String ONE_SPELL;
+	@Localize(locale = "de", value = "Zauber")
+	@Localize(locale = "ru", value = "заклинание")
+	private static String		ONE_SPELL;
 	@Localize("spells")
-	private static String MULTIPLE_SPELLS;
+	@Localize(locale = "de", value = "Zauber")
+	@Localize(locale = "ru", value = "заклинания")
+	private static String		MULTIPLE_SPELLS;
 	@Localize("{0}{1} {2} {3} whose name {4}\n")
-	private static String WHOSE_NAME;
+	@Localize(locale = "de", value = "{0}{1} {2} {3}, deren/dessen Namen {4}")
+	@Localize(locale = "ru", value = "{0}{1} {2} {3} с названием {4}\n")
+	private static String		WHOSE_NAME;
 	@Localize("{0}{1} {2} {3} of any kind\n")
-	private static String OF_ANY_KIND;
+	@Localize(locale = "de", value = "{0}{1} {2} {3} jeglicher Art")
+	@Localize(locale = "ru", value = "{0}{1} {2} {3} любого вида\n ")
+	private static String		OF_ANY_KIND;
 	@Localize("{0}{1} {2} {3} whose college {4}\n")
-	private static String WHOSE_COLLEGE;
+	@Localize(locale = "de", value = "{0}{1} {2} {3}, deren/dessen Schule {4}")
+	@Localize(locale = "ru", value = "{0}{1} {2} {3} со школой {4}\n")
+	private static String		WHOSE_COLLEGE;
 	@Localize("{0}{1} college count which {2}\n")
-	private static String COLLEGE_COUNT;
+	@Localize(locale = "de", value = "{0}{1} Zauber von {4} unterschiedlichen Schulen")
+	@Localize(locale = "ru", value = "{0}{1} заклинаний школы {2}\n")
+	private static String		COLLEGE_COUNT;
 
 	static {
 		Localization.initialize();
@@ -69,7 +79,7 @@ public class SpellPrereq extends HasPrereq {
 
 	/**
 	 * Creates a new prerequisite.
-	 * 
+	 *
 	 * @param parent The owning prerequisite list, if any.
 	 */
 	public SpellPrereq(PrereqList parent) {
@@ -81,7 +91,7 @@ public class SpellPrereq extends HasPrereq {
 
 	/**
 	 * Loads a prerequisite.
-	 * 
+	 *
 	 * @param parent The owning prerequisite list, if any.
 	 * @param reader The XML reader to load from.
 	 */
@@ -118,7 +128,7 @@ public class SpellPrereq extends HasPrereq {
 
 	/**
 	 * Creates a copy of the specified prerequisite.
-	 * 
+	 *
 	 * @param parent The owning prerequisite list, if any.
 	 * @param prereq The prerequisite to clone.
 	 */

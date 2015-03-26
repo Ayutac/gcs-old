@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -11,19 +11,19 @@
 
 package com.trollworks.gcs.prereq;
 
-import com.trollworks.toolkit.annotation.Localize;
-import com.trollworks.toolkit.utility.Localization;
-
-
 import com.trollworks.gcs.widgets.outline.ListRow;
+import com.trollworks.toolkit.annotation.Localize;
 import com.trollworks.toolkit.ui.layout.FlexGrid;
 import com.trollworks.toolkit.ui.layout.FlexRow;
 import com.trollworks.toolkit.ui.layout.FlexSpacer;
+import com.trollworks.toolkit.utility.Localization;
 
 /** A contained weight prerequisite editor panel. */
 public class ContainedWeightPrereqEditor extends PrereqEditor {
 	@Localize("which ")
-	private static String WHICH;
+	@Localize(locale = "de", value = "die ")
+	@Localize(locale = "ru", value = "который")
+	private static String	WHICH;
 
 	static {
 		Localization.initialize();
@@ -31,7 +31,7 @@ public class ContainedWeightPrereqEditor extends PrereqEditor {
 
 	/**
 	 * Creates a new contained weight prerequisite editor panel.
-	 * 
+	 *
 	 * @param row The owning row.
 	 * @param prereq The prerequisite to edit.
 	 * @param depth The depth of this prerequisite.

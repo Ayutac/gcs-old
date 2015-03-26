@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -37,10 +37,16 @@ import javax.swing.border.EmptyBorder;
 /** The notes panel. */
 public class NotesPanel extends ActionPanel {
 	@Localize("Notes")
+	@Localize(locale = "de", value = "Notizen")
+	@Localize(locale = "ru", value = "Заметка")
 	private static String		NOTES;
 	@Localize("Double-click to edit")
+	@Localize(locale = "de", value = "Doppelklicken, um zu bearbeiten")
+	@Localize(locale = "ru", value = "Дважды щёлкните для редактирования")
 	private static String		NOTES_TOOLTIP;
 	@Localize("Notes (continued)")
+	@Localize(locale = "de", value = "Notizen (Fortsetzung)")
+	@Localize(locale = "ru", value = "Заметка (продолжение)")
 	private static String		NOTES_CONTINUED;
 
 	static {

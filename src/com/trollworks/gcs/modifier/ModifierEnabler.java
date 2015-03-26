@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -43,16 +43,28 @@ import javax.swing.border.LineBorder;
 /** Asks the user to enable/disable modifiers. */
 public class ModifierEnabler extends JPanel {
 	@Localize("Enable Modifiers")
+	@Localize(locale = "de", value = "Modifikatoren auswählen")
+	@Localize(locale = "ru", value = "Включить модификаторы")
 	private static String		MODIFIER_TITLE;
 	@Localize("1 advantage remaining to be processed.")
+	@Localize(locale = "de", value = "1 weiterer Vorteil zu bearbeiten.")
+	@Localize(locale = "ru", value = "осталось обработать 1 преимущество.")
 	private static String		MODIFIER_ONE_REMAINING;
 	@Localize("{0} advantages remaining to be processed.")
+	@Localize(locale = "de", value = "{0} weitere Vorteile zu bearbeiten.")
+	@Localize(locale = "ru", value = "{0} преимуществ(а) осталось обработать.")
 	private static String		MODIFIER_REMAINING;
 	@Localize("Cancel Remaining")
+	@Localize(locale = "de", value = "Alles Abbrechen")
+	@Localize(locale = "ru", value = "Пропустить остальные")
 	private static String		CANCEL_REST;
 	@Localize("Cancel")
+	@Localize(locale = "de", value = "Abbrechen")
+	@Localize(locale = "ru", value = "Отмена")
 	private static String		CANCEL;
 	@Localize("Apply")
+	@Localize(locale = "de", value = "Anwenden")
+	@Localize(locale = "ru", value = "Применить")
 	private static String		APPLY;
 
 	static {

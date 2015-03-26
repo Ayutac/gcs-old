@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -24,6 +24,8 @@ import java.awt.event.KeyEvent;
 /** Provides the "Copy To Template" command. */
 public class CopyToTemplateCommand extends Command {
 	@Localize("Copy To Template")
+	@Localize(locale = "de", value = "Kopiere zur Vorlage")
+	@Localize(locale = "ru", value = "Копировать в шаблон")
 	private static String						COPY_TO_TEMPLATE;
 
 	static {

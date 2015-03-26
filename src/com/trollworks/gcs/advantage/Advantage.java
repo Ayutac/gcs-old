@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -44,6 +44,8 @@ import java.util.List;
 /** A GURPS Advantage. */
 public class Advantage extends ListRow {
 	@Localize("Advantage")
+	@Localize(locale = "de", value = "Vorteil")
+	@Localize(locale = "ru", value = "Преимущество")
 	private static String				DEFAULT_NAME;
 
 	static {
@@ -208,7 +210,7 @@ public class Advantage extends ListRow {
 
 	@Override
 	public String getRowType() {
-		return "Advantage"; //$NON-NLS-1$
+		return DEFAULT_NAME;
 	}
 
 	@Override

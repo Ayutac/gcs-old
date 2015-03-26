@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -56,12 +56,20 @@ public enum AdvantageContainerType {
 	};
 
 	@Localize("Group")
+	@Localize(locale = "de", value = "Gruppe")
+	@Localize(locale = "ru", value = "Группа")
 	static String	GROUP_TITLE;
 	@Localize("Meta-Trait")
+	@Localize(locale = "de", value = "Meta-Eigenschaft")
+	@Localize(locale = "ru", value = "Мета-черта")
 	static String	META_TRAIT_TITLE;
 	@Localize("Race")
+	@Localize(locale = "de", value = "Rasse")
+	@Localize(locale = "ru", value = "Раса")
 	static String	RACE_TITLE;
 	@Localize("Alternative Abilities")
+	@Localize(locale = "de", value = "Alternative Fähigkeiten")
+	@Localize(locale = "ru", value = "Альтернативные способности")
 	static String	ALTERNATIVE_ABILITIES_TITLE;
 
 	static {

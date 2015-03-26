@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -11,23 +11,27 @@
 
 package com.trollworks.gcs.prereq;
 
-import com.trollworks.toolkit.annotation.Localize;
-import com.trollworks.toolkit.utility.Localization;
-
-
 import com.trollworks.gcs.widgets.outline.ListRow;
+import com.trollworks.toolkit.annotation.Localize;
 import com.trollworks.toolkit.ui.layout.FlexGrid;
 import com.trollworks.toolkit.ui.layout.FlexRow;
 import com.trollworks.toolkit.ui.layout.FlexSpacer;
+import com.trollworks.toolkit.utility.Localization;
 
 /** An advantage prerequisite editor panel. */
 public class AdvantagePrereqEditor extends PrereqEditor {
 	@Localize("whose name ")
-	private static String WHOSE_NAME;
+	@Localize(locale = "de", value = "dessen Name ")
+	@Localize(locale = "ru", value = "чье имя ")
+	private static String	WHOSE_NAME;
 	@Localize("and whose level ")
-	private static String WHOSE_LEVEL;
+	@Localize(locale = "de", value = "und dessen Stufe ")
+	@Localize(locale = "ru", value = "и чей уровень ")
+	private static String	WHOSE_LEVEL;
 	@Localize("and whose notes ")
-	private static String WHOSE_NOTES;
+	@Localize(locale = "de", value = "und dessen Anmerkungen ")
+	@Localize(locale = "ru", value = "и чьи заметки ")
+	private static String	WHOSE_NOTES;
 
 	static {
 		Localization.initialize();
@@ -35,7 +39,7 @@ public class AdvantagePrereqEditor extends PrereqEditor {
 
 	/**
 	 * Creates a new advantage prerequisite editor panel.
-	 * 
+	 *
 	 * @param row The owning row.
 	 * @param prereq The prerequisite to edit.
 	 * @param depth The depth of this prerequisite.

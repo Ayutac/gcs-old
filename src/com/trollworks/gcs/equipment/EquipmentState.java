@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -24,7 +24,7 @@ public enum EquipmentState {
 	EQUIPPED {
 		@Override
 		public String toShortName() {
-			return "E"; //$NON-NLS-1$
+			return EQUIPPED_SHORT;
 		}
 
 		@Override
@@ -39,7 +39,7 @@ public enum EquipmentState {
 	CARRIED {
 		@Override
 		public String toShortName() {
-			return "C"; //$NON-NLS-1$
+			return CARRIED_SHORT;
 		}
 
 		@Override
@@ -51,7 +51,7 @@ public enum EquipmentState {
 	NOT_CARRIED {
 		@Override
 		public String toShortName() {
-			return "-"; //$NON-NLS-1$
+			return NOT_CARRIED_SHORT;
 		}
 
 		@Override
@@ -60,11 +60,28 @@ public enum EquipmentState {
 		}
 	};
 
+	@Localize("E")
+	@Localize(locale = "de", value = "A")
+	@Localize(locale = "ru", value = "Э")
+	static String	EQUIPPED_SHORT;
 	@Localize("Equipped")
+	@Localize(locale = "de", value = "Ausgerüstet")
+	@Localize(locale = "ru", value = "Экипирован")
 	static String	EQUIPPED_TITLE;
+	@Localize("C")
+	@Localize(locale = "de", value = "M")
+	@Localize(locale = "ru", value = "Н")
+	static String	CARRIED_SHORT;
 	@Localize("Carried")
+	@Localize(locale = "de", value = "Mitgeführt")
+	@Localize(locale = "ru", value = "Носимый")
 	static String	CARRIED_TITLE;
+	@Localize("-")
+	@Localize(locale = "de", value = "-")
+	static String	NOT_CARRIED_SHORT;
 	@Localize("Not Carried")
+	@Localize(locale = "de", value = "Nicht mitgeführt")
+	@Localize(locale = "ru", value = "Не носимый")
 	static String	NOT_CARRIED_TITLE;
 
 	static {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -43,6 +43,8 @@ import java.util.List;
 /** A piece of equipment. */
 public class Equipment extends ListRow {
 	@Localize("Equipment")
+	@Localize(locale = "de", value = "Ausrüstung")
+	@Localize(locale = "ru", value = "Снаряжение")
 	private static String			DEFAULT_NAME;
 
 	static {
@@ -214,7 +216,7 @@ public class Equipment extends ListRow {
 
 	@Override
 	public String getRowType() {
-		return "Equipment"; //$NON-NLS-1$
+		return DEFAULT_NAME;
 	}
 
 	@Override

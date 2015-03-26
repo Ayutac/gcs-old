@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -30,9 +30,17 @@ import java.util.HashSet;
 /** An Advantage prerequisite. */
 public class AdvantagePrereq extends NameLevelPrereq {
 	@Localize("{0}{1} an advantage whose name {2}")
+	@Localize(locale = "de", value = "{0}{1} einen Vorteil, dessen Name {2}")
+	@Localize(locale = "ru", value = "{0}{1}преимущество с названием {2}")
 	private static String		NAME_PART;
 	@Localize(", notes {0},")
+	@Localize(locale = "de", value = ", Notizen {0},")
+	@Localize(locale = "ru", value = ", заметок {0},")
 	private static String		NOTES_PART;
+	@Localize(" and level {0}")
+	@Localize(locale = "de", value = " und Stufe {0}")
+	@Localize(locale = "ru", value = " и уровень {0}\n ")
+	private static String		LEVEL_PART;
 
 	static {
 		Localization.initialize();

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -36,6 +36,8 @@ import javax.swing.JMenu;
 /** Provides the standard "File" menu. */
 public class FileMenuProvider implements MenuProvider {
 	@Localize("File")
+	@Localize(locale = "de", value = "Datei")
+	@Localize(locale = "ru", value = "Файл")
 	private static String		FILE;
 
 	static {

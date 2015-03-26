@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -30,8 +30,12 @@ import java.util.ArrayList;
 // RAW: This should be reimplemented in terms of the Duplicatable interface
 public class DuplicateCommand extends Command {
 	@Localize("Duplicate")
+	@Localize(locale = "de", value = "Duplizieren")
+	@Localize(locale = "ru", value = "Дублировать")
 	private static String					DUPLICATE;
 	@Localize("Duplicate Rows")
+	@Localize(locale = "de", value = "Zeile Duplizieren")
+	@Localize(locale = "ru", value = "Дублировать строки")
 	private static String					DUPLICATE_UNDO;
 
 	static {

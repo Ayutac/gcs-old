@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -22,6 +22,8 @@ import java.awt.event.ActionEvent;
 /** Provides the "Add Natural Punch" command. */
 public class AddNaturalPunchCommand extends Command {
 	@Localize("Include Punch In Weapons")
+	@Localize(locale = "de", value = "Führe Schlag als Waffe auf")
+	@Localize(locale = "ru", value = "Отображать удар в оружии")
 	private static String						ADD_NATURAL_PUNCH;
 
 	static {

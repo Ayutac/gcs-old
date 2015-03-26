@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -39,8 +39,12 @@ import javax.swing.event.DocumentListener;
 /** A standard search control. */
 public class Search extends JPanel implements DocumentListener, KeyListener, FocusListener {
 	@Localize("The number of matches found")
+	@Localize(locale = "de", value = "Die Anzahl der Suchergebnisse.")
+	@Localize(locale = "ru", value = "Количество найденных соответствий")
 	private static String	MSG_HIT_TOOLTIP;
 	@Localize("Enter text here and press RETURN to select all matching items")
+	@Localize(locale = "de", value = "Suchtext hier eingeben und ENTER drücken, um alle Suchergebnisse auszuwählen.")
+	@Localize(locale = "ru", value = "Введите здесь текст и нажмите ВВОД, чтобы выбрать все подходящие элементы")
 	private static String	MSG_SEARCH_FIELD_TOOLTIP;
 	private SearchTarget	mTarget;
 	private JLabel			mHits;

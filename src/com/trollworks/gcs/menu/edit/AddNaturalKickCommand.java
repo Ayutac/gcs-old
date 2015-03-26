@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -22,6 +22,8 @@ import java.awt.event.ActionEvent;
 /** Provides the "Add Natural Kick" command. */
 public class AddNaturalKickCommand extends Command {
 	@Localize("Include Kick In Weapons")
+	@Localize(locale = "de", value = "Führe Tritt als Waffe auf")
+	@Localize(locale = "ru", value = "Отображать пинок в оружии")
 	private static String						ADD_NATURAL_KICK;
 
 	static {

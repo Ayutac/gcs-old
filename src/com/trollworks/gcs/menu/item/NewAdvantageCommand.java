@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -27,8 +27,12 @@ import java.awt.event.KeyEvent;
 /** Provides the "New Advantage" command. */
 public class NewAdvantageCommand extends Command {
 	@Localize("New Advantage")
+	@Localize(locale = "de", value = "Neuer Vorteil")
+	@Localize(locale = "ru", value = "Новое преимущество")
 	private static String					ADVANTAGE;
 	@Localize("New Advantage Container")
+	@Localize(locale = "de", value = "Neuer Vorteils-Container")
+	@Localize(locale = "ru", value = "Новый контейнер преимущества")
 	private static String					ADVANTAGE_CONTAINER;
 
 	static {

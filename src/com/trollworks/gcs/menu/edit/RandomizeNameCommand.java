@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -24,10 +24,16 @@ import java.text.MessageFormat;
 /** Provides the "Generate Random Name" command. */
 public class RandomizeNameCommand extends Command {
 	@Localize("Male")
+	@Localize(locale = "de", value = "männlichen")
+	@Localize(locale = "ru", value = "муж.")
 	private static String						MALE;
 	@Localize("Female")
+	@Localize(locale = "de", value = "weiblichen")
+	@Localize(locale = "ru", value = "жен.")
 	private static String						FEMALE;
 	@Localize("Generate Random {0} Name")
+	@Localize(locale = "de", value = "Erstelle zufälligen {0} Namen")
+	@Localize(locale = "ru", value = "Создать случайное {0} имя")
 	private static String						TITLE;
 
 	static {

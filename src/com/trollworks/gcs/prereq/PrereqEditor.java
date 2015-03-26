@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -29,22 +29,40 @@ import javax.swing.JComponent;
 /** A generic prerequisite editor panel. */
 public abstract class PrereqEditor extends EditorPanel {
 	@Localize("Remove this prerequisite")
+	@Localize(locale = "de", value = "Diese Bedingung entfernen")
+	@Localize(locale = "ru", value = "Удалить это требование")
 	private static String			REMOVE_PREREQ_TOOLTIP;
 	@Localize("Remove this prerequisite list")
+	@Localize(locale = "de", value = "Diese Bedingungsliste entfernen")
+	@Localize(locale = "ru", value = "Удалить этот список требований")
 	private static String			REMOVE_PREREQ_LIST_TOOLTIP;
 	@Localize("has")
+	@Localize(locale = "de", value = "hat")
+	@Localize(locale = "ru", value = "имеет")
 	private static String			HAS;
 	@Localize("doesn't have")
+	@Localize(locale = "de", value = "hat nicht")
+	@Localize(locale = "ru", value = "не имеет")
 	private static String			DOES_NOT_HAVE;
 	@Localize("advantage")
+	@Localize(locale = "de", value = "Vorteil")
+	@Localize(locale = "ru", value = "преимущество")
 	private static String			ADVANTAGE;
 	@Localize("attribute")
+	@Localize(locale = "de", value = "Attribut")
+	@Localize(locale = "ru", value = "атрибут")
 	private static String			ATTRIBUTE;
 	@Localize("contained weight")
+	@Localize(locale = "de", value = "Zuladung")
+	@Localize(locale = "ru", value = "содержит вес")
 	private static String			CONTAINED_WEIGHT;
 	@Localize("skill")
+	@Localize(locale = "de", value = "Fertigkeit")
+	@Localize(locale = "ru", value = "умение")
 	private static String			SKILL;
 	@Localize("spell(s)")
+	@Localize(locale = "de", value = "Zauber")
+	@Localize(locale = "ru", value = "заклинание(я)")
 	private static String			SPELL;
 
 	static {

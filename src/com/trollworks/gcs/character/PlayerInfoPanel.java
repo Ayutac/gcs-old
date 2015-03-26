@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -20,12 +20,20 @@ import javax.swing.SwingConstants;
 /** The character player info panel. */
 public class PlayerInfoPanel extends DropPanel {
 	@Localize("Player Information")
+	@Localize(locale = "de", value = "Spielerinformation")
+	@Localize(locale = "ru", value = "Информация об игроке")
 	private static String	PLAYER_INFO;
 	@Localize("Player:")
+	@Localize(locale = "de", value = "Spieler:")
+	@Localize(locale = "ru", value = "Игрок:")
 	private static String	PLAYER_NAME;
 	@Localize("Campaign:")
+	@Localize(locale = "de", value = "Kampagne:")
+	@Localize(locale = "ru", value = "Компания:")
 	private static String	CAMPAIGN;
 	@Localize("Created On:")
+	@Localize(locale = "de", value = "Erstellt am:")
+	@Localize(locale = "ru", value = "Создан:")
 	private static String	CREATED_ON;
 
 	static {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -16,11 +16,9 @@ import com.trollworks.gcs.criteria.NumericCompareType;
 import com.trollworks.gcs.criteria.StringCompareType;
 import com.trollworks.gcs.criteria.StringCriteria;
 import com.trollworks.gcs.widgets.outline.ListRow;
-import com.trollworks.toolkit.annotation.Localize;
 import com.trollworks.toolkit.io.xml.XMLNodeType;
 import com.trollworks.toolkit.io.xml.XMLReader;
 import com.trollworks.toolkit.io.xml.XMLWriter;
-import com.trollworks.toolkit.utility.Localization;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -31,13 +29,6 @@ import java.util.HashSet;
  * item is present.
  */
 public abstract class NameLevelPrereq extends HasPrereq {
-	@Localize(" and level {0}\n")
-	static String				LEVEL_PART;
-
-	static {
-		Localization.initialize();
-	}
-
 	/** Provided for sub-classes. */
 	private static final String	TAG_NAME	= "name";	//$NON-NLS-1$
 	private static final String	TAG_LEVEL	= "level";	//$NON-NLS-1$

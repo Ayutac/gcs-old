@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -20,18 +20,32 @@ import java.awt.Font;
 /** GCS-specific fonts. */
 public class GCSFonts {
 	@Localize("Labels")
+	@Localize(locale = "de", value = "Überschriften")
+	@Localize(locale = "ru", value = "Заголовки")
 	private static String		LABELS_FONT;
 	@Localize("Fields")
+	@Localize(locale = "de", value = "Elemente")
+	@Localize(locale = "ru", value = "Поля")
 	private static String		FIELDS_FONT;
 	@Localize("Field Notes")
+	@Localize(locale = "de", value = "Anmerkungen zu Elementen")
+	@Localize(locale = "ru", value = "Заметки на полях")
 	private static String		FIELD_NOTES_FONT;
 	@Localize("Technique Fields")
+	@Localize(locale = "de", value = "Technik-Elemente")
+	@Localize(locale = "ru", value = "Области техники")
 	private static String		TECHNIQUE_FIELDS_FONT;
 	@Localize("Primary Footer")
+	@Localize(locale = "de", value = "Erste Fußzeile")
+	@Localize(locale = "ru", value = "Основной колонтитул")
 	private static String		PRIMARY_FOOTER_FONT;
 	@Localize("Secondary Footer")
+	@Localize(locale = "de", value = "Zweite Fußzeile")
+	@Localize(locale = "ru", value = "Дополнительный колонтитул")
 	private static String		SECONDARY_FOOTER_FONT;
 	@Localize("Notes")
+	@Localize(locale = "de", value = "Notizen")
+	@Localize(locale = "ru", value = "Заметка")
 	private static String		NOTES_FONT;
 
 	static {

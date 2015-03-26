@@ -25,7 +25,13 @@
 			<advantage>
 				<name>Insubstantiality</name>
 				<type>Mental/Physical, Exotic</type>
-				<base_points>40</base_points>
+				<base_points>80</base_points>
+				<modifier version="1" enabled="yes">
+					<name>Always On</name>
+					<cost type="percentage">-50</cost>
+					<affects>total</affects>
+					<reference>B63</reference>
+				</modifier>
 				<reference>B63</reference>
 				<notes>Always On</notes>
 			</advantage>

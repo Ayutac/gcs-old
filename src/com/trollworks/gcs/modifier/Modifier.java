@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -32,10 +32,16 @@ import java.util.HashSet;
 /** Model for trait modifiers */
 public class Modifier extends ListRow implements Comparable<Modifier> {
 	@Localize("Modifier")
+	@Localize(locale = "de", value = "Modifikator")
+	@Localize(locale = "ru", value = "Модификатор")
 	private static String			DEFAULT_NAME;
 	@Localize("Enhancement/Limitation")
+	@Localize(locale = "de", value = "Verbesserung / Einschränkung")
+	@Localize(locale = "ru", value = "Улучшение/ограничение")
 	private static String			MODIFIER_TYPE;
 	@Localize("** From container - not modifiable here **")
+	@Localize(locale = "de", value = "** Aus dem Container \u2013 hier nicht veränderbar **")
+	@Localize(locale = "ru", value = "** Из контейнера – не меняйте здесь **")
 	private static String			READ_ONLY;
 
 	static {

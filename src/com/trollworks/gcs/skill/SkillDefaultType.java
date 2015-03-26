@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -22,12 +22,22 @@ public enum SkillDefaultType {
 	/** The type for ST-based defaults. */
 	ST {
 		@Override
+		public String toString() {
+			return ST_TITLE;
+		}
+
+		@Override
 		public int getSkillLevelFast(GURPSCharacter character, SkillDefault skillDefault, HashSet<String> excludes) {
 			return finalLevel(skillDefault, SkillAttribute.ST.getBaseSkillLevel(character));
 		}
 	},
 	/** The type for DX-based defaults. */
 	DX {
+		@Override
+		public String toString() {
+			return DX_TITLE;
+		}
+
 		@Override
 		public int getSkillLevelFast(GURPSCharacter character, SkillDefault skillDefault, HashSet<String> excludes) {
 			return finalLevel(skillDefault, SkillAttribute.DX.getBaseSkillLevel(character));
@@ -36,6 +46,11 @@ public enum SkillDefaultType {
 	/** The type for IQ-based defaults. */
 	IQ {
 		@Override
+		public String toString() {
+			return IQ_TITLE;
+		}
+
+		@Override
 		public int getSkillLevelFast(GURPSCharacter character, SkillDefault skillDefault, HashSet<String> excludes) {
 			return finalLevel(skillDefault, SkillAttribute.IQ.getBaseSkillLevel(character));
 		}
@@ -43,12 +58,22 @@ public enum SkillDefaultType {
 	/** The type for HT-based defaults. */
 	HT {
 		@Override
+		public String toString() {
+			return HT_TITLE;
+		}
+
+		@Override
 		public int getSkillLevelFast(GURPSCharacter character, SkillDefault skillDefault, HashSet<String> excludes) {
 			return finalLevel(skillDefault, SkillAttribute.HT.getBaseSkillLevel(character));
 		}
 	},
 	/** The type for Will-based defaults. */
 	Will {
+		@Override
+		public String toString() {
+			return WILL_TITLE;
+		}
+
 		@Override
 		public int getSkillLevelFast(GURPSCharacter character, SkillDefault skillDefault, HashSet<String> excludes) {
 			return finalLevel(skillDefault, SkillAttribute.Will.getBaseSkillLevel(character));
@@ -58,7 +83,7 @@ public enum SkillDefaultType {
 	Per {
 		@Override
 		public String toString() {
-			return PERCEPTION;
+			return PER_TITLE;
 		}
 
 		@Override
@@ -181,13 +206,41 @@ public enum SkillDefaultType {
 		}
 	};
 
+	@Localize("ST")
+	@Localize(locale = "de", value = "ST")
+	@Localize(locale = "ru", value = "СЛ")
+	static String	ST_TITLE;
+	@Localize("DX")
+	@Localize(locale = "de", value = "GE")
+	@Localize(locale = "ru", value = "ЛВ")
+	static String	DX_TITLE;
+	@Localize("IQ")
+	@Localize(locale = "de", value = "IQ")
+	@Localize(locale = "ru", value = "ИН")
+	static String	IQ_TITLE;
+	@Localize("HT")
+	@Localize(locale = "de", value = "KO")
+	@Localize(locale = "ru", value = "ЗД")
+	static String	HT_TITLE;
+	@Localize("Will")
+	@Localize(locale = "de", value = "Wille")
+	@Localize(locale = "ru", value = "Воля")
+	static String	WILL_TITLE;
 	@Localize("Perception")
-	static String	PERCEPTION;
+	@Localize(locale = "de", value = "Wahrnehmung")
+	@Localize(locale = "ru", value = "Восприятие")
+	static String	PER_TITLE;
 	@Localize("Skill named")
+	@Localize(locale = "de", value = "Fertigkeit namens")
+	@Localize(locale = "ru", value = "Название умения")
 	static String	SKILL_NAMED;
 	@Localize("Parrying skill named")
+	@Localize(locale = "de", value = "Parieren-Fertigkeit namens")
+	@Localize(locale = "ru", value = "Название умения парирования")
 	static String	PARRY_SKILL_NAMED;
 	@Localize("Blocking skill named")
+	@Localize(locale = "de", value = "Abblocken-Fertigkeit namens")
+	@Localize(locale = "ru", value = "Название умения блока")
 	static String	BLOCK_SKILL_NAMED;
 
 	static {

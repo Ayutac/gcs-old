@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -26,12 +26,20 @@ import javax.swing.JOptionPane;
 /** Provides the "Randomize Description" command. */
 public class RandomizeDescriptionCommand extends Command {
 	@Localize("Randomize Description\u2026")
+	@Localize(locale = "de", value = "Zufällige Beschreibung erstellen\u2026")
+	@Localize(locale = "ru", value = "Случайное описание\u2026")
 	private static String							RANDOMIZE_DESCRIPTION;
 	@Localize("Description Randomizer")
+	@Localize(locale = "de", value = "Zufallsgenerator für Beschreibungen")
+	@Localize(locale = "ru", value = "Сгенерировать описание")
 	private static String							RANDOMIZER;
 	@Localize("Apply")
+	@Localize(locale = "de", value = "Anwenden")
+	@Localize(locale = "ru", value = "Применить")
 	private static String							APPLY;
 	@Localize("Cancel")
+	@Localize(locale = "de", value = "Abbrechen")
+	@Localize(locale = "ru", value = "Отмена")
 	private static String							CANCEL;
 
 	static {

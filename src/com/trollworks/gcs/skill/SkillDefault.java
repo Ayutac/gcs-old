@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -25,8 +25,12 @@ import java.util.HashSet;
 /** Describes a skill default. */
 public class SkillDefault {
 	@Localize(" Parry")
+	@Localize(locale = "de", value = " Parieren")
+	@Localize(locale = "ru", value = " Парирование")
 	private static String		PARRY;
 	@Localize(" Block")
+	@Localize(locale = "de", value = " Abblocken")
+	@Localize(locale = "ru", value = " Блок")
 	private static String		BLOCK;
 
 	static {

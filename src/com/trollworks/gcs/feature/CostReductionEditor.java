@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -26,6 +26,8 @@ import javax.swing.JComboBox;
 /** An cost reduction editor. */
 public class CostReductionEditor extends FeatureEditor {
 	@Localize("by {0}%")
+	@Localize(locale = "de", value = "um {0}%")
+	@Localize(locale = "ru", value = "на {0}% ")
 	private static String		BY;
 
 	static {
@@ -52,7 +54,7 @@ public class CostReductionEditor extends FeatureEditor {
 		row.add(addChangeBaseTypeCombo());
 		String[] names = new String[CostReduction.TYPES.length];
 		for (int i = 0; i < CostReduction.TYPES.length; i++) {
-			names[i] = CostReduction.TYPES[i].name();
+			names[i] = CostReduction.TYPES[i].toString();
 		}
 		row.add(addComboBox(CHANGE_ATTRIBUTE, names, feature.getAttribute().name()));
 		String[] percents = new String[16];

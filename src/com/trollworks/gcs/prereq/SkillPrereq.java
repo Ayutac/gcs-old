@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -32,10 +32,20 @@ import java.util.HashSet;
 /** A Skill prerequisite. */
 public class SkillPrereq extends NameLevelPrereq {
 	@Localize("{0}{1} a skill whose name {2}")
+	@Localize(locale = "de", value = "{0}{1} eine Fertigkeit, deren Name {2}")
+	@Localize(locale = "ru", value = "{0}{1} умение с названием {2}")
 	private static String SKILL_NAME_PART;
 	@Localize(", specialization {0},")
+	@Localize(locale = "de", value = ", Spezialisierung {0},")
+	@Localize(locale = "ru", value = ", специализация {0},")
 	private static String SPECIALIZATION_PART;
+	@Localize(" and level {0}")
+	@Localize(locale = "de", value = " und Fertigkeitswert {0}")
+	@Localize(locale = "ru", value = " и уровень {0}\n ")
+	private static String LEVEL_PART;
 	@Localize(" level {0} and tech level matches\n")
+	@Localize(locale = "de", value = " Fertigkeitswert {0} und Techlevel stimmt überein")
+	@Localize(locale = "ru", value = " уровень {0} и ТУ совпадают\n")
 	private static String LEVEL_AND_TL_PART;
 
 	static {

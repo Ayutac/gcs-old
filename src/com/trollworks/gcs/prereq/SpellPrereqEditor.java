@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -26,12 +26,20 @@ import javax.swing.JComboBox;
 /** A spell prerequisite editor panel. */
 public class SpellPrereqEditor extends PrereqEditor {
 	@Localize("whose name")
+	@Localize(locale = "de", value = "deren/dessen Name")
+	@Localize(locale = "ru", value = "чьё название")
 	private static String			WHOSE_SPELL_NAME;
 	@Localize("of any kind")
+	@Localize(locale = "de", value = "jeglicher Art")
+	@Localize(locale = "ru", value = "любого вида")
 	private static String			ANY;
 	@Localize("whose college name")
+	@Localize(locale = "de", value = "deren/dessen Schule")
+	@Localize(locale = "ru", value = "чьё название школы")
 	private static String			COLLEGE;
 	@Localize("from different colleges")
+	@Localize(locale = "de", value = "von unterschiedlichen Schulen")
+	@Localize(locale = "ru", value = "из разных школ")
 	private static String			COLLEGE_COUNT;
 
 	static {

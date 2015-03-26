@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -36,8 +36,12 @@ import java.util.List;
 /** An outline specifically for skills. */
 public class SkillOutline extends ListOutline implements Incrementable {
 	@Localize("Increment Points")
+	@Localize(locale = "de", value = "Punkte erhöhen")
+	@Localize(locale = "ru", value = "Увеличить очки")
 	private static String	INCREMENT;
 	@Localize("Decrement Points")
+	@Localize(locale = "de", value = "Punkte verringern")
+	@Localize(locale = "ru", value = "Уменьшить очки")
 	private static String	DECREMENT;
 
 	static {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -55,8 +55,12 @@ import javax.swing.undo.StateEdit;
 /** A list of advantages and disadvantages from a library. */
 public class TemplateDockable extends CommonDockable implements NotifierTarget, SearchTarget, RetargetableFocus {
 	@Localize("Untitled Template")
+	@Localize(locale = "de", value = "Unbenannte Vorlage")
+	@Localize(locale = "ru", value = "Безымянный шаблон")
 	private static String			UNTITLED;
 	@Localize("Add Rows")
+	@Localize(locale = "de", value = "Zeilen hinzufügen")
+	@Localize(locale = "ru", value = "Добавить строки")
 	private static String			ADD_ROWS;
 
 	static {

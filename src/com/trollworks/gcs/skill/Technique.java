@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -11,18 +11,16 @@
 
 package com.trollworks.gcs.skill;
 
-import com.trollworks.toolkit.annotation.Localize;
-import com.trollworks.toolkit.utility.Localization;
-
-
 import com.trollworks.gcs.character.GURPSCharacter;
 import com.trollworks.gcs.common.DataFile;
 import com.trollworks.gcs.common.LoadState;
 import com.trollworks.gcs.template.Template;
 import com.trollworks.gcs.widgets.outline.ListRow;
 import com.trollworks.gcs.widgets.outline.RowEditor;
+import com.trollworks.toolkit.annotation.Localize;
 import com.trollworks.toolkit.io.xml.XMLReader;
 import com.trollworks.toolkit.io.xml.XMLWriter;
+import com.trollworks.toolkit.utility.Localization;
 import com.trollworks.toolkit.utility.text.Numbers;
 
 import java.io.IOException;
@@ -33,11 +31,17 @@ import java.util.HashSet;
 /** A GURPS Technique. */
 public class Technique extends Skill {
 	@Localize("Technique")
-	private static String TECHNIQUE_DEFAULT_NAME;
+	@Localize(locale = "de", value = "Technik")
+	@Localize(locale = "ru", value = "Техника")
+	private static String		TECHNIQUE_DEFAULT_NAME;
 	@Localize("{0}Requires a skill named {1}\n")
-	private static String REQUIRES_SKILL;
+	@Localize(locale = "de", value = "{0}Benötigt eine Fertigkeit namens {1}")
+	@Localize(locale = "ru", value = "{0}Требует умение {1}\n")
+	private static String		REQUIRES_SKILL;
 	@Localize("{0}Requires at least 1 point in the skill named {1}\n")
-	private static String REQUIRES_POINTS;
+	@Localize(locale = "de", value = "{0}Benötigt mindestens einen Punkt in der Fertigkeit namens {1}")
+	@Localize(locale = "ru", value = "{0}Требуется хотя бы 1 очко в умении {1}\n")
+	private static String		REQUIRES_POINTS;
 
 	static {
 		Localization.initialize();
@@ -52,7 +56,7 @@ public class Technique extends Skill {
 
 	/**
 	 * Calculates the technique level.
-	 * 
+	 *
 	 * @param character The character the technique will be attached to.
 	 * @param name The name of the technique.
 	 * @param specialization The specialization of the technique.
@@ -104,7 +108,7 @@ public class Technique extends Skill {
 
 	/**
 	 * Creates a string suitable for displaying the level.
-	 * 
+	 *
 	 * @param level The skill level.
 	 * @param relativeLevel The relative skill level.
 	 * @param modifier The modifer to the skill level.
@@ -119,7 +123,7 @@ public class Technique extends Skill {
 
 	/**
 	 * Creates a new technique.
-	 * 
+	 *
 	 * @param dataFile The data file to associate it with.
 	 */
 	public Technique(DataFile dataFile) {
@@ -130,7 +134,7 @@ public class Technique extends Skill {
 
 	/**
 	 * Creates a clone of an existing technique and associates it with the specified data file.
-	 * 
+	 *
 	 * @param dataFile The data file to associate it with.
 	 * @param technique The technique to clone.
 	 * @param forSheet Whether this is for a character sheet or a list.
@@ -146,7 +150,7 @@ public class Technique extends Skill {
 
 	/**
 	 * Loads a technique and associates it with the specified data file.
-	 * 
+	 *
 	 * @param dataFile The data file to associate it with.
 	 * @param reader The XML reader to load from.
 	 * @param state The {@link LoadState} to use.
@@ -185,7 +189,7 @@ public class Technique extends Skill {
 
 	@Override
 	public String getRowType() {
-		return "Technique"; //$NON-NLS-1$
+		return TECHNIQUE_DEFAULT_NAME;
 	}
 
 	@Override
@@ -241,10 +245,10 @@ public class Technique extends Skill {
 	 */
 	public boolean satisfied(StringBuilder builder, String prefix) {
 		if (mDefault.getType().isSkillBased()) {
-			Skill skill = getCharacter().getBestSkillNamed(mDefault.getName(), mDefault.getSpecialization(), true, new HashSet<String>());
+			Skill skill = getCharacter().getBestSkillNamed(mDefault.getName(), mDefault.getSpecialization(), false, new HashSet<String>());
 			boolean satisfied = skill != null && skill.getPoints() > 0;
 			if (!satisfied && builder != null) {
-				if (skill != null) {
+				if (skill == null) {
 					builder.append(MessageFormat.format(REQUIRES_SKILL, prefix, mDefault.getFullName()));
 				} else {
 					builder.append(MessageFormat.format(REQUIRES_POINTS, prefix, mDefault.getFullName()));
@@ -315,9 +319,9 @@ public class Technique extends Skill {
 	@Override
 	public void setDifficultyFromText(String text) {
 		text = text.trim();
-		if (SkillDifficulty.A.toString().equalsIgnoreCase(text)) {
+		if (SkillDifficulty.A.name().equalsIgnoreCase(text)) {
 			setDifficulty(SkillDifficulty.A);
-		} else if (SkillDifficulty.H.toString().equalsIgnoreCase(text)) {
+		} else if (SkillDifficulty.H.name().equalsIgnoreCase(text)) {
 			setDifficulty(SkillDifficulty.H);
 		}
 	}
@@ -334,7 +338,7 @@ public class Technique extends Skill {
 
 	/**
 	 * Sets whether the maximum level is limited.
-	 * 
+	 *
 	 * @param limited The value to set.
 	 * @return Whether anything was changed.
 	 */
@@ -353,7 +357,7 @@ public class Technique extends Skill {
 
 	/**
 	 * Sets the value of limit modifier.
-	 * 
+	 *
 	 * @param limitModifier The value to set.
 	 * @return Whether anything was changed.
 	 */

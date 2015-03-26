@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -34,6 +34,8 @@ import javax.swing.Icon;
 /** Provides a common base for library and sheet files. */
 public abstract class CommonDockable extends Dockable implements CloseHandler, Saveable, Undoable {
 	@Localize("An error occurred while trying to save the file.")
+	@Localize(locale = "de", value = "Ein Fehler ist beim Speichern der Datei aufgetreten.")
+	@Localize(locale = "ru", value = "Произошла ошибка при попытке сохранить файл.")
 	private static String	SAVE_ERROR;
 
 	static {

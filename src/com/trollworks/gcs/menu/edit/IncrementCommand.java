@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -23,6 +23,8 @@ import java.awt.event.KeyEvent;
 /** Provides the "Increment" command. */
 public class IncrementCommand extends Command {
 	@Localize("Increment")
+	@Localize(locale = "de", value = "Erhöhen")
+	@Localize(locale = "ru", value = "Увеличить")
 	private static String					INCREMENT;
 
 	static {

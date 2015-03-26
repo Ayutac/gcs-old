@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -43,6 +43,8 @@ import java.util.Set;
 /** A GURPS Skill. */
 public class Skill extends ListRow {
 	@Localize("Skill")
+	@Localize(locale = "de", value = "Fertigkeit")
+	@Localize(locale = "ru", value = "Умение")
 	static String					DEFAULT_NAME;
 
 	static {
@@ -261,7 +263,7 @@ public class Skill extends ListRow {
 
 	@Override
 	public String getRowType() {
-		return "Skill"; //$NON-NLS-1$
+		return DEFAULT_NAME;
 	}
 
 	@Override
@@ -340,7 +342,7 @@ public class Skill extends ListRow {
 			if (mEncumbrancePenaltyMultiplier != 0) {
 				out.simpleTag(TAG_ENCUMBRANCE_PENALTY, mEncumbrancePenaltyMultiplier);
 			}
-			out.simpleTag(TAG_DIFFICULTY, getDifficultyAsText());
+			out.simpleTag(TAG_DIFFICULTY, getDifficultyAsText(false));
 			out.simpleTag(TAG_POINTS, mPoints);
 			for (WeaponStats weapon : mWeapons) {
 				weapon.save(out);
@@ -587,7 +589,7 @@ public class Skill extends ListRow {
 			// We have to go backwards through the list to avoid the
 			// regex grabbing the "H" in "VH".
 			for (int j = difficulty.length - 1; j >= 0; j--) {
-				if (input.matches("(?i).*" + element + ".*/.*" + difficulty[j] + ".*")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				if (input.matches("(?i).*" + element.name() + ".*/.*" + difficulty[j].name() + ".*")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					setDifficulty(element, difficulty[j]);
 					return;
 				}
@@ -597,10 +599,22 @@ public class Skill extends ListRow {
 
 	/** @return The formatted attribute/difficulty. */
 	public String getDifficultyAsText() {
+		return getDifficultyAsText(true);
+	}
+
+	/**
+	 * @param localized Whether to use localized versions of attribute and difficulty.
+	 * @return The formatted attribute/difficulty.
+	 */
+	public String getDifficultyAsText(boolean localized) {
 		if (canHaveChildren()) {
 			return EMPTY;
 		}
-		return mAttribute + SLASH + mDifficulty;
+		StringBuilder buffer = new StringBuilder();
+		buffer.append(localized ? mAttribute.toString() : mAttribute.name());
+		buffer.append(SLASH);
+		buffer.append(localized ? mDifficulty.toString() : mDifficulty.name());
+		return buffer.toString();
 	}
 
 	@Override

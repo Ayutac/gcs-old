@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -27,9 +27,12 @@ import java.text.MessageFormat;
 
 /** A Attribute prerequisite. */
 public class AttributePrereq extends HasPrereq {
-	@Localize("{0}{1} {2} which {3}\\n")
+	@Localize("{0}{1} {2} which {3}")
+	@Localize(locale = "de", value = "{0}{1} {2} die {3}")
+	@Localize(locale = "ru", value = "{0}{1} {2} который {3}")
 	private static String						DESCRIPTION;
 	@Localize("{0}+{1}")
+	@Localize(locale = "de", value = "{0}+{1}")
 	private static String						COMBINED;
 
 	static {

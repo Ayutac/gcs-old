@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -116,14 +116,24 @@ public enum SelfControlRoll {
 	};
 
 	@Localize("CR: 6 (Rarely)")
+	@Localize(locale = "de", value = "SBP: 6 (selten)")
+	@Localize(locale = "ru", value = "СК: 6 (редко)")
 	static String				CR6_TITLE;
 	@Localize("CR: 9 (Fairly Often)")
+	@Localize(locale = "de", value = "SBP: 9 (öfters)")
+	@Localize(locale = "ru", value = "СК: 9 (часто)")
 	static String				CR9_TITLE;
 	@Localize("CR: 12 (Quite Often)")
+	@Localize(locale = "de", value = "SBP: 12 (häufig)")
+	@Localize(locale = "ru", value = "СК: 12 (достаточно часто)")
 	static String				CR12_TITLE;
 	@Localize("CR: 15 (Almost All The Time)")
+	@Localize(locale = "de", value = "SBP: 15 (fast immer)")
+	@Localize(locale = "ru", value = "СК: 15 (почти всегда)")
 	static String				CR15_TITLE;
 	@Localize("None Required")
+	@Localize(locale = "de", value = "Keine benötigt")
+	@Localize(locale = "ru", value = "Не требуется")
 	static String				NONE_REQUIRED_TITLE;
 
 	static {

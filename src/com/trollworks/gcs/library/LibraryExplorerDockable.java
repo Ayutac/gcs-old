@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -73,10 +73,16 @@ import javax.swing.event.DocumentListener;
 /** A list of available library files. */
 public class LibraryExplorerDockable extends Dockable implements DocumentListener, SearchTarget, ListCollectionListener, FieldAccessor, IconAccessor, Openable {
 	@Localize("Library Explorer")
+	@Localize(locale = "de", value = "Listen-Bibliothek")
+	@Localize(locale = "ru", value = "Библиотека")
 	private static String	TITLE;
 	@Localize("Enter text here to narrow the list to only those rows containing matching items")
+	@Localize(locale = "de", value = "Hier Text eingeben, um eine Liste der passenden Einträge anzuzeigen")
+	@Localize(locale = "ru", value = "Введите текст здесь, чтобы сузить список до содержащих подходящие элементы")
 	private static String	SEARCH_FIELD_TOOLTIP;
 	@Localize("Opens/closes all hierarchical rows")
+	@Localize(locale = "de", value = "Öffnet / Schließt alle Untereinträge")
+	@Localize(locale = "ru", value = "Развернуть/свернуть все вложенные строки")
 	private static String	TOGGLE_ROWS_OPEN_TOOLTIP;
 
 	static {
@@ -172,7 +178,7 @@ public class LibraryExplorerDockable extends Dockable implements DocumentListene
 	}
 
 	private void documentChanged() {
-		//mOutline.reapplyRowFilter();
+		// mOutline.reapplyRowFilter();
 	}
 
 	private void fillTree(List<?> lists, TreeContainerRow parent) {

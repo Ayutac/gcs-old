@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -48,14 +48,24 @@ public enum Encumbrance {
 	};
 
 	@Localize("None")
+	@Localize(locale = "de", value = "Keine")
+	@Localize(locale = "ru", value = "Нет")
 	protected static String	NONE_TITLE;
 	@Localize("Light")
+	@Localize(locale = "de", value = "Leicht")
+	@Localize(locale = "ru", value = "Лёгкая")
 	protected static String	LIGHT_TITLE;
 	@Localize("Medium")
+	@Localize(locale = "de", value = "Mittel")
+	@Localize(locale = "ru", value = "Средние")
 	protected static String	MEDIUM_TITLE;
 	@Localize("Heavy")
+	@Localize(locale = "de", value = "Schwer")
+	@Localize(locale = "ru", value = "Тяжелый")
 	protected static String	HEAVY_TITLE;
 	@Localize("X-Heavy")
+	@Localize(locale = "de", value = "Extrem")
+	@Localize(locale = "ru", value = "Сверхтяж")
 	protected static String	EXTRA_HEAVY_TITLE;
 
 	static {

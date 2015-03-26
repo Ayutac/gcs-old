@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -10,10 +10,6 @@
  */
 
 package com.trollworks.gcs.spell;
-
-import com.trollworks.toolkit.annotation.Localize;
-import com.trollworks.toolkit.utility.Localization;
-
 
 import com.trollworks.gcs.character.GURPSCharacter;
 import com.trollworks.gcs.common.DataFile;
@@ -26,9 +22,11 @@ import com.trollworks.gcs.widgets.outline.ListRow;
 import com.trollworks.gcs.widgets.outline.MultipleRowUndo;
 import com.trollworks.gcs.widgets.outline.RowPostProcessor;
 import com.trollworks.gcs.widgets.outline.RowUndo;
+import com.trollworks.toolkit.annotation.Localize;
 import com.trollworks.toolkit.collections.FilteredIterator;
 import com.trollworks.toolkit.ui.widget.outline.OutlineModel;
 import com.trollworks.toolkit.ui.widget.outline.Row;
+import com.trollworks.toolkit.utility.Localization;
 
 import java.awt.EventQueue;
 import java.awt.dnd.DropTargetDragEvent;
@@ -38,9 +36,13 @@ import java.util.List;
 /** An outline specifically for spells. */
 public class SpellOutline extends ListOutline implements Incrementable {
 	@Localize("Increment Points")
-	private static String INCREMENT;
+	@Localize(locale = "de", value = "Punkte erhöhen")
+	@Localize(locale = "ru", value = "Увеличить очки")
+	private static String	INCREMENT;
 	@Localize("Decrement Points")
-	private static String DECREMENT;
+	@Localize(locale = "de", value = "Punkte verringern")
+	@Localize(locale = "ru", value = "Уменьшить очки")
+	private static String	DECREMENT;
 
 	static {
 		Localization.initialize();
@@ -61,7 +63,7 @@ public class SpellOutline extends ListOutline implements Incrementable {
 
 	/**
 	 * Create a new spells outline.
-	 * 
+	 *
 	 * @param dataFile The owning data file.
 	 */
 	public SpellOutline(DataFile dataFile) {
@@ -70,7 +72,7 @@ public class SpellOutline extends ListOutline implements Incrementable {
 
 	/**
 	 * Create a new spells outline.
-	 * 
+	 *
 	 * @param dataFile The owning data file.
 	 * @param model The {@link OutlineModel} to use.
 	 */

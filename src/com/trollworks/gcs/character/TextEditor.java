@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -35,8 +35,12 @@ import javax.swing.border.EmptyBorder;
 /** Provides simplistic text editing. */
 public class TextEditor extends JDialog implements ActionListener, WindowFocusListener {
 	@Localize("Cancel")
+	@Localize(locale = "de", value = "Abbrechen")
+	@Localize(locale = "ru", value = "Отмена")
 	private static String	CANCEL;
 	@Localize("Set")
+	@Localize(locale = "de", value = "Ok")
+	@Localize(locale = "ru", value = "Принять")
 	private static String	SET;
 
 	static {

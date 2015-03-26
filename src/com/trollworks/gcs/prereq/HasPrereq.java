@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -19,8 +19,12 @@ import com.trollworks.toolkit.utility.Localization;
 /** An abstract prerequisite class for whether or not the specific item is present. */
 public abstract class HasPrereq extends Prereq {
 	@Localize("Has")
+	@Localize(locale = "de", value = "Hat")
+	@Localize(locale = "ru", value = "Имеет")
 	static String					HAS;
 	@Localize("Does not have")
+	@Localize(locale = "de", value = "Hat nicht")
+	@Localize(locale = "ru", value = "Не имеет")
 	static String					DOES_NOT_HAVE;
 
 	static {

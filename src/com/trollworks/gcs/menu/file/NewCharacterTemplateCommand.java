@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -23,6 +23,8 @@ import java.awt.event.ActionEvent;
 /** Provides the "New Character Template" command. */
 public class NewCharacterTemplateCommand extends Command {
 	@Localize("New Character Template")
+	@Localize(locale = "de", value = "Neue Charaktervorlage")
+	@Localize(locale = "ru", value = "Новый шаблон персонажа")
 	private static String							NEW_CHARACTER_TEMPLATE;
 
 	static {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -12,9 +12,9 @@
 package com.trollworks.gcs.menu.edit;
 
 import com.trollworks.toolkit.annotation.Localize;
-import com.trollworks.toolkit.utility.Localization;
 import com.trollworks.toolkit.ui.menu.Command;
 import com.trollworks.toolkit.ui.widget.outline.OutlineProxy;
+import com.trollworks.toolkit.utility.Localization;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -23,7 +23,9 @@ import java.awt.event.KeyEvent;
 /** Provides the "Decrement" command. */
 public class DecrementCommand extends Command {
 	@Localize("Decrement")
-	private static String DECREMENT;
+	@Localize(locale = "de", value = "Verringern")
+	@Localize(locale = "ru", value = "Уменьшить")
+	private static String					DECREMENT;
 
 	static {
 		Localization.initialize();

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2014 by Richard A. Wilkes. All rights reserved.
+ * Copyright (c) 1998-2015 by Richard A. Wilkes. All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * version 2.0. If a copy of the MPL was not distributed with this file, You
@@ -67,42 +67,80 @@ import java.util.HashSet;
 /** A GURPS character. */
 public class GURPSCharacter extends DataFile {
 	@Localize("Modified at {0} on {1}")
+	@Localize(locale = "de", value = "Verändert um {0} am {1}.")
+	@Localize(locale = "ru", value = "Изменен в {0} {1}")
 	private static String						LAST_MODIFIED;
 	@Localize("Created On Change")
+	@Localize(locale = "de", value = "Erstellt am ändern")
+	@Localize(locale = "ru", value = "Изменить дату создания")
 	private static String						CREATED_ON_UNDO;
 	@Localize("Strength Change")
+	@Localize(locale = "de", value = "Stärke ändern")
+	@Localize(locale = "ru", value = "Изменить силу")
 	private static String						STRENGTH_UNDO;
 	@Localize("Dexterity Change")
+	@Localize(locale = "de", value = "Geschick ändern")
+	@Localize(locale = "ru", value = "Изменить ловкость")
 	private static String						DEXTERITY_UNDO;
 	@Localize("Intelligence Change")
+	@Localize(locale = "de", value = "Intelligenz ändern")
+	@Localize(locale = "ru", value = "Смена интеллекта")
 	private static String						INTELLIGENCE_UNDO;
 	@Localize("Health Change")
+	@Localize(locale = "de", value = "Konstitution ändern")
+	@Localize(locale = "ru", value = "Смена уровня здоровья")
 	private static String						HEALTH_UNDO;
 	@Localize("Basic Speed Change")
+	@Localize(locale = "de", value = "Grundgeschwindigkeit ändern")
+	@Localize(locale = "ru", value = "Смена Базовой Скорости")
 	private static String						BASIC_SPEED_UNDO;
 	@Localize("Basic Move Change")
+	@Localize(locale = "de", value = "Grundbewegung ändern")
+	@Localize(locale = "ru", value = "Смена Базового Движения")
 	private static String						BASIC_MOVE_UNDO;
 	@Localize("Perception Change")
+	@Localize(locale = "de", value = "Wahrnehmung ändern")
+	@Localize(locale = "ru", value = "Смена восприятия")
 	private static String						PERCEPTION_UNDO;
 	@Localize("Will Change")
+	@Localize(locale = "de", value = "Wille ändern")
+	@Localize(locale = "ru", value = "Изменить волю")
 	private static String						WILL_UNDO;
 	@Localize("Earned Points Change")
+	@Localize(locale = "de", value = "Verdiente Punkte ändern")
+	@Localize(locale = "ru", value = "Изменить заработаные очки")
 	private static String						EARNED_POINTS_UNDO;
 	@Localize("Hit Points Change")
+	@Localize(locale = "de", value = "Normale Trefferpunkte ändern")
+	@Localize(locale = "ru", value = "Изменить единицы здоровья")
 	private static String						HIT_POINTS_UNDO;
 	@Localize("Current Hit Points Change")
+	@Localize(locale = "de", value = "Aktuelle Trefferpunkte ändern")
+	@Localize(locale = "ru", value = "Смена текущих очков (единиц) жизни")
 	private static String						CURRENT_HIT_POINTS_UNDO;
 	@Localize("Fatigue Points Change")
+	@Localize(locale = "de", value = "Normale Erschöpfungspunkte ändern")
+	@Localize(locale = "ru", value = "Изменить очки усталости")
 	private static String						FATIGUE_POINTS_UNDO;
 	@Localize("Current Fatigue Points Change")
+	@Localize(locale = "de", value = "Aktuelle Erschöpfungspunkte ändern")
+	@Localize(locale = "ru", value = "Изменить текущие единицы усталости")
 	private static String						CURRENT_FATIGUE_POINTS_UNDO;
 	@Localize("Include Punch In Weapons")
+	@Localize(locale = "de", value = "Schlag als Waffe aufführen")
+	@Localize(locale = "ru", value = "Отображать удар в оружии")
 	private static String						INCLUDE_PUNCH_UNDO;
 	@Localize("Include Kick In Weapons")
+	@Localize(locale = "de", value = "Tritt als Waffe aufführen")
+	@Localize(locale = "ru", value = "Отображать пинок в оружии")
 	private static String						INCLUDE_KICK_UNDO;
 	@Localize("Include Kick w/Boots In Weapons")
+	@Localize(locale = "de", value = "Tritt mit Schuh als Waffe aufführen")
+	@Localize(locale = "ru", value = "Отображать пинок (в ботинке) в оружии")
 	private static String						INCLUDE_BOOTS_UNDO;
 	@Localize("Unable to set a value for %s")
+	@Localize(locale = "de", value = "Kann keinen Wert für %s setzen")
+	@Localize(locale = "ru", value = "Невозможно установить значение для %s")
 	private static String						UNABLE_TO_SET_VALUE;
 
 	static {
@@ -777,6 +815,12 @@ public class GURPSCharacter extends DataFile {
 				} else {
 					setCreatedOn((String) value);
 				}
+			} else if (ID_INCLUDE_PUNCH.equals(id)) {
+				setIncludePunch(((Boolean) value).booleanValue());
+			} else if (ID_INCLUDE_KICK.equals(id)) {
+				setIncludeKick(((Boolean) value).booleanValue());
+			} else if (ID_INCLUDE_BOOTS.equals(id)) {
+				setIncludeKickBoots(((Boolean) value).booleanValue());
 			} else if (ID_STRENGTH.equals(id)) {
 				setStrength(((Integer) value).intValue());
 			} else if (ID_DEXTERITY.equals(id)) {
@@ -1128,12 +1172,24 @@ public class GURPSCharacter extends DataFile {
 	}
 
 	private WeightValue getBasicLift(WeightUnits desiredUnits) {
+		WeightUnits units;
+		double divisor;
+		double roundAt;
+		if (SheetPreferences.areGurpsMetricRulesUsed()) {
+			units = WeightUnits.KG;
+			divisor = 10;
+			roundAt = 5;
+		} else {
+			units = WeightUnits.LB;
+			divisor = 5;
+			roundAt = 10;
+		}
 		int strength = getStrength() + mLiftingStrengthBonus;
-		double value = strength * strength / 5.0;
-		if (value >= 10.0) {
+		double value = strength * strength / divisor;
+		if (value >= roundAt) {
 			value = Math.round(value);
 		}
-		return new WeightValue(desiredUnits.convert(WeightUnits.LB, value), desiredUnits);
+		return new WeightValue(desiredUnits.convert(units, value), desiredUnits);
 	}
 
 	private WeightValue getMultipleOfBasicLift(double multiple) {
@@ -1177,10 +1233,11 @@ public class GURPSCharacter extends DataFile {
 	 * @return The maximum amount the character can carry for the specified encumbrance level.
 	 */
 	public WeightValue getMaximumCarry(Encumbrance encumbrance) {
-		WeightValue lift = getBasicLift(WeightUnits.LB);
+		WeightUnits calcUnits = SheetPreferences.areGurpsMetricRulesUsed() ? WeightUnits.KG : WeightUnits.LB;
+		WeightValue lift = getBasicLift(calcUnits);
 		lift.setValue(Math.floor(lift.getValue() * encumbrance.getWeightMultiplier() * 10.0) / 10.0);
 		WeightUnits desiredUnits = SheetPreferences.getWeightUnits();
-		return new WeightValue(desiredUnits.convert(WeightUnits.LB, lift.getValue()), desiredUnits);
+		return new WeightValue(desiredUnits.convert(calcUnits, lift.getValue()), desiredUnits);
 	}
 
 	/**
@@ -1398,6 +1455,48 @@ public class GURPSCharacter extends DataFile {
 	}
 
 	/**
+	 * Convert a metric {@link WeightValue} by GURPS Metric rules into an imperial one. If an
+	 * imperial {@link WeightValue} is passed as an argument, it will be returned unchanged.
+	 *
+	 * @param value The {@link WeightValue} to be converted by GURPS Metric rules.
+	 * @return The converted imperial {@link WeightValue}.
+	 */
+	public static WeightValue convertFromGurpsMetric(WeightValue value) {
+		switch (value.getUnits()) {
+			case G:
+				return new WeightValue(value.getValue() / 30, WeightUnits.OZ);
+			case KG:
+				return new WeightValue(value.getValue() * 2, WeightUnits.LB);
+			case T:
+				return new WeightValue(value.getValue(), WeightUnits.LT);
+			default:
+				return value;
+		}
+	}
+
+	/**
+	 * Convert an imperial {@link WeightValue} by GURPS Metric rules into a metric one. If a metric
+	 * {@link WeightValue} is passed as an argument, it will be returned unchanged.
+	 *
+	 * @param value The {@link WeightValue} to be converted by GURPS Metric rules.
+	 * @return The converted metric {@link WeightValue}.
+	 */
+	public static WeightValue convertToGurpsMetric(WeightValue value) {
+		switch (value.getUnits()) {
+			case LB:
+				return new WeightValue(value.getValue() / 2, WeightUnits.KG);
+			case LT:
+				return new WeightValue(value.getValue(), WeightUnits.T);
+			case OZ:
+				return new WeightValue(value.getValue() * 30, WeightUnits.G);
+			case TN:
+				return new WeightValue(value.getValue(), WeightUnits.T);
+			default:
+				return value;
+		}
+	}
+
+	/**
 	 * Calculate the total weight and wealth carried.
 	 *
 	 * @param notify Whether to send out notifications if the resulting values are different from
@@ -1412,6 +1511,13 @@ public class GURPSCharacter extends DataFile {
 			int quantity = equipment.getQuantity();
 			if (equipment.isCarried()) {
 				WeightValue weight = new WeightValue(equipment.getWeight());
+				if (SheetPreferences.areGurpsMetricRulesUsed()) {
+					if (SheetPreferences.getWeightUnits().isMetric()) {
+						weight = GURPSCharacter.convertToGurpsMetric(weight);
+					} else {
+						weight = GURPSCharacter.convertFromGurpsMetric(weight);
+					}
+				}
 				weight.setValue(weight.getValue() * quantity);
 				mCachedWeightCarried.add(weight);
 			}
