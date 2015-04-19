@@ -23,6 +23,7 @@ import com.trollworks.gcs.weapon.WeaponStats;
 import com.trollworks.gcs.widgets.outline.ListRow;
 import com.trollworks.gcs.widgets.outline.RowEditor;
 import com.trollworks.toolkit.annotation.Localize;
+import com.trollworks.toolkit.collections.FilteredIterator;
 import com.trollworks.toolkit.io.xml.XMLReader;
 import com.trollworks.toolkit.io.xml.XMLWriter;
 import com.trollworks.toolkit.ui.image.StdImage;
@@ -438,6 +439,13 @@ public class Skill extends ListRow {
 
 	/** @return The points. */
 	public int getPoints() {
+		if (canHaveChildren()) {
+			int points = 0;
+			for (Skill child : new FilteredIterator<>(getChildren(), Skill.class)) {
+				points += child.getPoints();
+			}
+			return points;
+		}
 		return mPoints;
 	}
 
